@@ -1,0 +1,317 @@
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="main.css">
+
+</head>
+<body>
+<div class="container">
+	<div id="header1"></div>
+	<div id="content">
+		
+	   <div class="paper paper-polar" >
+	   <div class="row">
+			<h4 class="text-center">Provincial Office</h4></div>	
+	   </div>
+	   <div id="details">
+	     
+	   
+		<div class="row">
+			<div class="paper paper-polar" >
+			<div class="row">
+			<div class="col-xs-12">
+					<h3>List of Offices</h3>
+					<table class="table table-hover" id="ds" style="width:100%">
+					<thead><tr><th></th><th>Code</th><th>Name</th></tr></thead>
+					<tfoot><tr><th></th><th>Code</th><th>Name</th></tr></tfoot>
+					<tbody></tbody>
+					</table>
+					
+				</div>	
+			</div>
+			</div>
+		</div>
+	   </div>	   
+	   
+	  
+		
+		
+	   
+	</div>
+</div>
+<div id="header"></div>
+<div id="officeModal" class="modal" role="dialog">
+  <div class="modal-dialog" role="document">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title"><span>Office Details</span></h4>
+      </div>
+      <div class="modal-body">
+		<div class="row">
+			<form name="entryform" id="entryform">
+					
+								<input type="hidden" name="idofficeprovincial" id="idofficeprovincial">
+								<input type="hidden" name="trans" value="ADD">
+								<input type="hidden" name="tk">
+							
+							<div class="form-group col-sm-12">
+								<label>Municipal Offices</label>
+								<select class="form-control" name="municipal" id="municipal">
+									
+									
+								</select>
+							</div>
+							
+							
+							
+					
+					<div class="col-xs-12">
+						<button name="butsave" type="button" onclick="savethis(this.form)" class="btn btn-primary" id="savebut">Save</a>
+						<button name="butcancel" type="button" onclick="cancelthis(this.form)" class="btn btn-default" id="cancelbut">Cancel</a>	
+					</div>						
+				</form>	
+				
+		</div>
+	  </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+</body>
+<script src="jquery.min.js"></script>
+<script src="bootstrap.min.js"></script>
+<script src="jquery.dataTables.min.js"></script>
+<script src="Buttons/js/buttons.print.min.js"></script>
+<script src="jquery.toaster.js"></script>
+<script src="bootbox.min.js"></script>
+<script src="select2.min.js"></script>
+<script src="Chart.bundle.min.js"></script>
+<script src="main1.js"></script>
+<script>
+var nrow=0;
+var courses;
+
+function startload() {
+var caption = "DAR Region XI";
+var today = new Date();
+	var asDate = new Date();
+	var options = { year: 'numeric', month: 'long', day: 'numeric' };
+	var stoday = today.toLocaleDateString("en-US", options);
+
+
+	document.getElementById('details').style.display = "block";
+	
+	
+	var tk=qs['tk'];
+	var table = $('#ds').DataTable( {
+		"ajax": "provincialController.php?trans=getdetails&tk="+tk,
+		dom: 'lfrtBip', 
+		buttons: [
+            'copy', {extend : 'excelHtml5',title : 'List of Provincial Offices'
+			, messageTop: caption, messageBottom: '\n Prepared by: '+ fullname + ' ' +stoday, footer:true}, 
+			{extend: 'pdf', 
+			title : 'List of Provincial Offices'
+			, messageTop: caption, messageBottom: '\n Prepared by: '+ fullname + ' ' +stoday, footer:true},
+			{extend: 'print',
+			title : 'List of Provincial Offices',
+			 messageTop: caption, messageBottom: '\n Prepared by: '+ fullname + ' ' +stoday, footer:true
+			
+			}
+        ],
+        "columns": [
+            {"className":      'details-control',
+												 "orderable":      false,
+												 "data":           null,
+												 "defaultContent": ''},
+			{ "data": "officecode" },
+			{ "data": "officename" }
+			
+			],
+        "order": [[0, 'desc']]
+    } );
+	
+	
+	$('#ds tbody').on('click', 'td.details-control', function () {
+        var tr = $(this).closest('tr');
+        var row = table.row( tr );
+ 
+        if ( row.child.isShown() ) {
+            // This row is already open - close it
+            row.child.hide();
+            tr.removeClass('shown');
+        }
+        else {
+            // Open this row
+            row.child( format(row.data())).show();
+            tr.addClass('shown');
+			getchild(row.data());
+        }
+    } );
+	
+	initload();
+	
+}
+
+
+function format(row){
+var dividoffice = 'div'+row['idoffice'];
+var tableidoffice ='table'+row['idoffice'];
+var elem1 = document.getElementById(tableidoffice);
+var elem2 = document.getElementById(dividoffice);
+var ckey="'"+row['idoffice']+"'";
+if (elem1){
+  elem.parentNode.removeChild(tableidoffice);
+}
+if (elem1){
+  elem.parentNode.removeChild(dividoffice);
+}
+  return '<div id="'+dividoffice+'"class="col-xs-12 well"><table class="table" id="'+tableidoffice+'" style="width:100%"><thead><tr><td>OfficeCode</td><td>Name</td><td></td></tr></thead></table>'+
+	'<div class="pull-right"><button type="button" onclick="addmunicipal('+ckey+')" class="btn btn-primary" data-toggle="tooltip" title="Add Municipal Office"><span class="glyphicon glyphicon-plus"></span></button></div></div>';
+}
+function addmunicipal(idofficeprovincial){
+var tk=qs['tk'];
+{$.get("provincialController.php",{trans:"getmunicipal","idofficeprovincial":idofficeprovincial,"tk":tk},function(data){
+											var row = data['municipal'];
+											var idofficeprovincial = data['idofficeprovincial'];
+											var gl=document.getElementById('municipal');
+											gl.innerHTML='';
+											var x;
+											for (x = 0;x < row.length; x++){
+												var option = document.createElement("option");
+												option.text = row[x]['officename'];
+												option.value = row[x]['idoffice'];
+												gl.add(option);
+											}
+											document.getElementById('idofficeprovincial').value=idofficeprovincial;
+											$("#officeModal").modal("show");
+											
+							        },'json');
+					}
+
+}
+function deletebutton(d){
+var key="'"+d['idprovincialoffice']+"','"+d['officename']+"','"+d['idofficeprovincial']+"'";
+return '<button class="btn btn-link" type="button" onclick="deletethis('+key+')"><span class="glyphicon glyphicon-remove"></span></button>';
+}
+function deletethis(idprovincialoffice, officename, idofficeprovincial){
+bootbox.confirm({
+    message: 'Delete '+ officename +'?',
+    buttons: {
+        confirm: {
+            label: 'Yes',
+            className: 'btn-danger'
+        },
+        cancel: {
+            label: 'No',
+            className: 'btn-default'
+        }
+    },
+    callback: function (result) {
+        if (result){
+			var tk=qs['tk'];
+			{$.get("provincialController.php",{trans:"delete","idprovincialoffice":idprovincialoffice,"idofficeprovincial":idofficeprovincial,"tk":tk},function(data){
+											var key = '#table'+data['idofficeprovincial'];
+											$.toaster({ priority : 'success', title : 'Provincial Office', message : 'Municipal Office Deleted'});
+									        $(key).DataTable().ajax.reload(null,false);
+							        },'json');
+					}
+
+		}
+    }
+});
+
+}
+function getchild(data){
+var idoffice = '#table'+data['idoffice'];
+var idofficeprovincial = data['idoffice'];
+var officename = data['officename'];
+var caption = "DAR Region XI "+ officename;
+var today = new Date();
+	var asDate = new Date();
+	var options = { year: 'numeric', month: 'long', day: 'numeric' };
+	var stoday = today.toLocaleDateString("en-US", options);
+
+var tk=qs['tk'];
+var table = $(idoffice).DataTable( {
+		"ajax": "provincialController.php?trans=getchilddetails&idoffice="+idofficeprovincial+"&tk="+tk,
+		dom: 'lfrtBip', 
+		buttons: [
+            'copy', {extend : 'excelHtml5',title : 'List of Offices'
+			, messageTop: caption, messageBottom: '\n Prepared by: '+ fullname + ' ' +stoday, footer:true}, 
+			{extend: 'pdf', 
+			title : 'List of Offices'
+			, messageTop: caption, messageBottom: '\n Prepared by: '+ fullname + ' ' +stoday, footer:true},
+			{extend: 'print',
+			title : 'List of Offices',
+			 messageTop: caption, messageBottom: '\n Prepared by: '+ fullname + ' ' +stoday, footer:true
+			
+			}
+        ],
+		"destroy": true,
+		"searching": false,
+        "columns": [
+            
+			{ "data": "officecode" },
+			{ "data": "officename" },
+			{ "data": function (d) { return deletebutton(d);}}
+			],
+        "order": [[0, 'desc']]
+    } );
+	
+	$('#ds tbody').on( 'click', 'td.deleteclassbutton1', function (o) {
+        var tr = $(this).closest('tr');
+        var row = table.row( tr );
+		deletethis(row.data());
+	} );
+
+    
+}
+
+
+function savethis(thisform){
+var cont = 1;
+
+	if (!document.getElementById('municipal').value){cont=-1;$.toaster({ priority : 'danger', title : 'Provincial Office', message : 'Invalid Data Selected'});}
+	
+	
+	if (cont > -1){
+			
+		var data = $(thisform).serialize();
+		
+		$.ajax({
+            url: 'provincialController.php',
+			data: data,
+			cache: false,
+			contentType: false,
+			processData: false,
+			dataType: 'json',
+			type: 'GET',
+            success: function(data) {
+						var idofficeprovincial = data['idofficeprovincial'];
+						var key = '#table'+idofficeprovincial;
+				    	$(key).DataTable().ajax.reload(false,false);
+						$.toaster({ priority : 'success', title : 'Provincial Office', message : 'Record Saved'});
+					
+			}
+		});
+		
+		$("#officeModal").modal("hide");
+		
+	}
+	return false;
+}
+
+function cancelthis(thisform){
+	
+	$('#officeModal').modal('hide');
+}
+
+</script>

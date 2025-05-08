@@ -1,0 +1,31 @@
+{"DARMO":{"url":"darmoView.html","display":true,"image":"images/certificate.png"},
+"DARPO":{"url":"darpoView.html","display":true,"image":"images/certificate.png"},
+"CARPO":{"url":"carpoView.html","display":true,"image":"images/certificate.png"},
+"CHIEF LEGAL":{"url":"chieflegalView.html","display":true,"image":"images/certificate.png"},
+"PARO":{"url":"PAROView.html","display":true,"image":"images/certificate.png"},
+"Legal":{"url":"legalView.html","display":true,"image":"images/certificate.png"},
+"LegalHead":{"url":"legalheadView.html","display":true,"image":"images/certificate.png"},
+"forApproval":{"url":"approvalView.html","display":true,"image":"images/certificate.png"},
+"forDisapproval":{"url":"disapprovalView.html","display":true,"image":"images/certificate.png"},
+"forAppeals":{"url":"appealsView.html","display":true,"image":"images/certificate.png"},
+"forAmend":{"url":"amendView.html","display":true,"image":"images/certificate.png"},
+"Monitoring":{
+	"OnProgress":{"url":"progressView.html","display":true,"image":"images/certificate.png"},
+	"Completed":{"url":"completedView.html","display":true,"image":"images/certificate.png"},
+	"MARPO Certification":{"url":"marpocertificateView.html","display":true,"image":"images/certificate.png"},
+	"DAR Clearance":{"url":"clearanceView.html","display":true,"image":"images/certificate.png"},
+	"Tracking":{"url":"tracking2View.html","display":true,"image":"images/certificate.png"}
+	},
+"Appointment":{
+	"Create Schedule":{"url":"scheduleView.html","display":true,"image":"images/certificate.png"},
+	"Available Schedules":{"url":"availableschedulesView.html","display":true,"image":"images/certificate.png"},
+	"Appointment Schedules":{"url":"listappointmentsView.html","display":true,"image":"images/certificate.png"}
+	},
+"Administration":{
+	"Users":{"url":"usersView.html","display":true,"image":"images/users.jpg"},
+	"Office":{"url":"officeView.html","display":true,"image":"images/users.jpg"},
+	"Provincial Office":{"url":"provincialView.html","display":true,"image":"images/users.jpg"},
+	"User Profile":{"url":"usersprofileView.html","display":true,"image":"images/users.jpg"},
+	"Verify Device": {"url":"verifydeviceView.html","display":true,"image":"images/users.jpg"}
+	}
+}

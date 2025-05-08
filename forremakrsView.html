@@ -1,0 +1,503 @@
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="main.css">
+
+</head>
+<body>
+<div class="container">
+	<div id="header1"></div>
+	<div id="content">
+		
+	   <div class="paper paper-polar" >
+	   <div class="row">
+			<h4 class="text-center">For Remarks</h4></div>	
+	   </div>
+	   <div id="list">
+	     
+	   
+		<div class="row">
+			<div class="paper paper-polar" >
+			<div class="row">
+			<div class="col-xs-12">
+					<h3>List of Encoded Forms for Remarks</h3>
+					<table class="table table-hover" id="ds" style="width:100%">
+					<thead><tr><th></th><th>Reference No</th><th>Subject</th><th>Date</th><th></th></tr></thead>
+					<tfoot><tr><th></th><th>Reference No</th><th>Subject</th><th>Date</th><th></th></tr></tfoot>
+					<tbody></tbody>
+					</table>
+					
+				</div>	
+			</div>
+			</div>
+		</div>
+	   </div>	   
+	   <div id="details" style="display:none">
+			<form name="entryform" id="entryform">
+					<fieldset name="myfields" id="myfields" disabled>
+								<input type="hidden" name="iddcrform" class="iddcrform">
+								<input type="hidden" name="trans" class="trans">
+								<input type="hidden" name="tk" class="tk">
+							<div class="col-sm-12">
+								<label>To:</label>
+								<select name="to[]" class="simple-select2" style="width: 100%" multiple></select>
+								
+							</div>
+							<div class="form-group col-sm-12">
+								<label>Reference No.:</label>
+								<input type="text" class="form-control" name="referenceno" placeholder="CIO-20" >
+							</div>
+							<div class="form-group col-sm-12">
+								<label>Date Filed:</label>
+								<input type="date" class="form-control" name="datefiled" >
+							</div>
+							<div class="col-sm-12">
+								<label><input type="checkbox" name="urgent" value="Y">Urgent</label>
+							</div>
+							<div class="form-group col-sm-12">
+								<label>Subject:</label>
+								<input type="text" class="form-control" name="subject">
+							</div>
+							<div class="col-sm-12">
+								<label>Platform:</label><br>
+								<div class="col-sm-6">
+									<label><input type="checkbox" name="facebook" value="Y">Facebook</label><br>
+									<label><input type="checkbox" name="email" value="Y">E-mail</label>
+								</div>
+								<div class="col-sm-6">
+									<label><input type="checkbox" name="text" value="Y">Text Message</label><br>
+									<label><input type="checkbox" name="call" value="Y">Call</label>
+								</div>
+							</div>
+							<div  class="col-sm-12">
+								<label>Type of Report:</label><br>
+								<div class="col-sm-4">
+									<label><input type="checkbox"  name="complaint" value="Y">Complaint</label><br>
+									<label><input type="checkbox"  name="request" value="Y">Request</label><br>
+									<label><input type="checkbox"  name="suggestion" value="Y">Suggestion</label>
+								</div>
+								<div class="col-sm-4">
+									<label><input type="checkbox"  name="commendation" value="Y">Commendation/ Appreciation</label><br>
+									<label><input type="checkbox"  name="followup" value="Y">Follow-up</label><br>
+									<label><input type="checkbox"  name="inquiry" value="Y">Inquiry</label>
+								</div>
+								<div class="col-sm-4">
+									<label><input type="checkbox"  name="others" onclick="showodetails(this.form)" value="Y">Others</label>
+									<input type="text" class="form-control" name="odetails">
+								</div>
+							</div>
+							
+							<div class="form-group col-sm-12">
+								<label for="comment">Details:</label>
+								<textarea class="form-control" rows="5" name="details"></textarea>
+							</div>
+							<div class="form-group col-sm-12">
+								<label>Prepared by</label>
+								<input type="text" class="form-control" name="preparedby" placeholder="Enter fullname" >
+							</div>
+							<div class="form-group col-sm-12">
+								<label for="comment">Remarks:</label>
+								<textarea class="form-control" rows="5" name="remarks"></textarea>
+							</div>
+							<div class="form-group col-sm-12">
+								<label>Chief of Staff</label>
+								<input type="text" class="form-control" name="chiefofstaff" placeholder="Enter fullname" >
+							</div>
+							
+					</fieldset>
+					<div class="col-xs-12">
+						<button name="butsave" type="button" onclick="savethis(this.form)" class="btn btn-primary" id="savebut">Save</a>
+						<button name="butupdate" type="button" onclick="updatethis(this.form)" class="btn btn-success" id="updatebut">Update</a>
+						<button name="butprint" type="button" onclick="printthis(this.form)" class="btn btn-primary" id="printbut">Print</a>	
+						<button name="butcancel" type="button" onclick="cancelthis(this.form)" class="btn btn-default" id="cancelbut">Cancel</a>
+						<button name="butclose" type="button" onclick="closethis(this.form)" class="btn btn-danger" id="closebut">Close</a>	
+					</div>	
+			</form>
+			<div class="col-xs-12" id="divattachment">
+						<div class="col-xs-12">
+							<h5>Attachment/s:</h5>
+							<button type="button" class="btn btn-default" onclick="addimages();return false;" id="addimage">Add Image (max image size is 3mb)</button>
+							<br><br>
+						</div>
+						<div class="col-xs-12">
+							<div id="divimages"></div>
+						</div>
+			</div>
+		</div>
+	  
+		
+		
+	   
+	</div>
+</div>
+<div id="header"></div>
+
+
+<div id="mySave" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      
+      <div class="modal-body">
+		  <img class="img-responsive center-block" alt="saving" src="images/saving.gif">
+		  <div class="col-xs-12" style="text-align:center"><span>Saving Please Wait</span></div>
+	  </div>
+      
+    </div>
+
+  </div>
+</div>
+
+
+<section><div id="attachmentdiv"></div></section>
+</body>
+<script src="main.js"></script>
+<script>
+var tupdate = false;
+
+function startload() {
+	
+	
+	var tk=qs['tk'];
+	var table = $('#ds').DataTable( {
+		"ajax": "forremarksController.php?trans=getdetails&tk="+tk,
+        "columns": [
+            {"className":      'details-control',
+												 "orderable":      false,
+												 "data":           null,
+												 "defaultContent": ''},
+			{ "data": "referenceno"},
+			{ "data": "subject"},
+			{ "data": "datefiled"},
+			{"className":'remarksclassbutton',"defaultContent": '<button type="button" data-toggle="tooltip" title="Route" class="btn btn-link" ><span class="glyphicon glyphicon-level-up" aria-hidden="true"></span></button>'}	
+
+        ],
+        "order": [[3, 'desc']]
+    } );
+	
+	
+	$('#ds tbody').on( 'click', 'td.remarksclassbutton', function (o) {
+        var tr = $(this).closest('tr');
+        var row = table.row( tr );
+		routethis(row.data());
+	} );
+	$('#ds tbody').on('click', 'td.details-control', function () {
+		
+        var tr = $(this).closest('tr');
+        var row = table.row( tr );
+ 
+        if ( row.child.isShown() ) {
+            
+            row.child.hide();
+            tr.removeClass('shown');
+			
+			
+        }
+		
+        else {
+            if ( table.row( '.shown' ).length ) {
+                  $('.details-control', table.row( '.shown' ).node()).click();
+			}
+            row.child( format(row.data())).show();
+            tr.addClass('shown');
+			getchild(row.data());
+        }
+		
+    } );
+	
+	
+	$.get("encodedController.php",{trans:"offices","tk":tk},function(data){
+										var offices = data['table'];
+										document.getElementsByName('to[]')[0].length = 0;
+										offices.forEach(initselect);
+										initselect2();
+										},'json');
+	 
+	startattachment();
+	initload();
+}
+function initselect2(){
+
+$('.simple-select2').select2({
+												theme: "classic",
+												placeholder: "Offices",
+												allowClear: true
+											});
+}
+function initselect(item, index, arr){
+var sel = document.getElementsByName('to[]')[0];
+	sel.options[sel.options.length] = new Option(item['officename'],item['officecode']);
+
+}
+function showodetails(xform){
+	var others = xform.elements.namedItem('others');
+	if (others.checked) {
+		xform.elements.namedItem('odetails').style.display="inline";
+	} else {
+		xform.elements.namedItem('odetails').style.display="none";
+	}
+}
+
+
+
+function format(row){
+var iddcrform = row['iddcrform'];
+var elem = document.getElementById(iddcrform);
+if (elem){
+  elem.parentNode.removeChild(iddcrform);
+}
+  return '<div class="col-xs-12 well" id="'+iddcrform+'"></div>';
+}
+function getchild(data){
+var iddcrform = '#'+data['iddcrform'];
+//document.getElementsByName('myfields')[0].disabled = true;
+//var nform = $('#entryform').clone(true);
+$('.simple-select2').select2('destroy');
+var tform = document.getElementById('form'+data['iddcrform']);
+if (tform){
+	tform.parentNode.removeChild('form'+data['iddcrform']);
+}
+var nform = $('#entryform').clone(true).prop('id','form'+data['iddcrform']);
+nform.appendTo( iddcrform );
+initselect2();
+var x = document.getElementById('form'+data['iddcrform']);
+var sltor = iddcrform+' select';
+	
+	x.elements.namedItem('tk').value=qs['tk'];
+	x.elements.namedItem('trans').value='UPDATE';
+	x.elements.namedItem('iddcrform').value=data['iddcrform'];
+	var sto = data['to'];
+	var xto = sto.split(";");
+	//$('.simple-select2').val([""]);
+	$(sltor).val(sto.split(";")).trigger("change");
+	
+	x.elements.namedItem('subject').value= data['subject'];
+	x.elements.namedItem('referenceno').value= data['referenceno'];
+	x.elements.namedItem('odetails').value= data['odetails'];
+	x.elements.namedItem('details').value= data['details'];
+	x.elements.namedItem('preparedby').value= data['preparedby'];
+	x.elements.namedItem('remarks').value= data['remarks'];
+	x.elements.namedItem('datefiled').value= data['datefiled'];
+	if (data['urgent']=='Y'){
+		x.elements.namedItem('urgent').checked = true;
+	} else {
+		x.elements.namedItem('urgent').checked = false;
+	}
+	if (data['facebook']=='Y'){
+		x.elements.namedItem('facebook').checked = true;
+	} else {
+		x.elements.namedItem('facebook').checked = false;
+	}
+	if (data['email']=='Y'){
+		x.elements.namedItem('email').checked = true;
+	} else {
+		x.elements.namedItem('email').checked = false;
+	}
+	if (data['text']=='Y'){
+		x.elements.namedItem('text').checked = true;
+	} else {
+		x.elements.namedItem('text').checked = false;
+	}
+	if (data['call']=='Y'){
+		x.elements.namedItem('call').checked = true;
+	} else {
+		x.elements.namedItem('call').checked = false;
+	}
+	if (data['complaint']=='Y'){
+		x.elements.namedItem('complaint').checked = true;
+	} else {
+		x.elements.namedItem('complaint').checked = false;
+	}
+	if (data['request']=='Y'){
+		x.elements.namedItem('request').checked = true;
+	} else {
+		x.elements.namedItem('request').checked = false;
+	}
+	if (data['suggestion']=='Y'){
+		x.elements.namedItem('suggestion').checked = true;
+	} else {
+		x.elements.namedItem('suggestion').checked = false;
+	}
+	if (data['commendation']=='Y'){
+		x.elements.namedItem('commendation').checked = true;
+	} else {
+		x.elements.namedItem('commendation').checked = false;
+	}
+	if (data['followup']=='Y'){
+		x.elements.namedItem('followup').checked = true;
+	} else {
+		x.elements.namedItem('followup').checked = false;
+	}
+	if (data['inquiry']=='Y'){
+		x.elements.namedItem('inquiry').checked = true;
+	} else {
+		x.elements.namedItem('inquiry').checked = false;
+	}
+	if (data['others']=='Y'){
+		x.elements.namedItem('others').checked = true;
+		x.elements.namedItem('odetails').style.display="block";
+	} else {
+		x.elements.namedItem('odetails').style.display="none";
+		x.elements.namedItem('others').checked = false;
+	}
+	x.elements.namedItem('chiefofstaff').value= data['chiefofstaff'];
+	x.elements.namedItem('myfields').disabled = true;
+	
+	x.elements.namedItem('butupdate').style.display='inline';
+	x.elements.namedItem('butsave').style.display='none';
+	x.elements.namedItem('butcancel').style.display='none';
+	x.elements.namedItem('butclose').style.display='none';
+	
+	
+	
+    $('.simple-select2').select2('enable',false);
+	var nform = $('#divattachment').clone(true);
+	nform.appendTo( iddcrform );
+	document.getElementById('divattachment').style.display = "block";
+	document.getElementById('keyvalue').value = data['iddcrform'];
+	document.getElementById('keyname').value = 'iddcrform';
+	getattachments(data['iddcrform']);
+	initload();
+	
+}
+
+function updatethis(thisform){
+thisform.elements.namedItem('butupdate').style.display='none';
+thisform.elements.namedItem('butprint').style.display='none';
+thisform.elements.namedItem('butsave').style.display='inline';
+thisform.elements.namedItem('butcancel').style.display='inline';
+thisform.elements.namedItem('myfields').disabled = false;
+$('.simple-select2').select2('enable');
+	
+	return false;
+	
+}
+
+function savethis(thisform){
+var cont = 1;
+
+	
+	
+	var xsubject = thisform.elements.namedItem('subject').value;
+	var xdetails = thisform.elements.namedItem('details').value;
+		
+		if (!xsubject) { $.toaster({ priority : 'danger', title : 'Encoded', message : 'Invalid Subject Field'}); cont = -1;} 
+		if (!xdetails) { $.toaster({ priority : 'danger', title : 'Encoded', message : 'Invalid Details Field'}); cont = -1;} 
+	
+	
+	if (cont > -1){
+		
+		$("#mySave").modal("show");
+		var data = $(thisform).serialize();
+		
+		$.ajax({
+            url: 'encodedController.php',
+			data: data,
+			cache: false,
+			contentType: false,
+			processData: false,
+			dataType: 'json',
+			type: 'GET',
+            success: function(data) {
+			
+				    if (data["iddcrform"] > -1){
+							
+						//$('#ds').DataTable().ajax.reload(false,false);
+							
+						//$("#detailsModal").modal("hide");	
+						$.toaster({ priority : 'success', title : 'Encoded', message : 'Record Saved'});
+						$('.iddcrform').val(data['iddcrform']);
+						$('.tk').val(qs['tk']);
+						$('.trans').val('UPDATE');
+						
+						
+						document.getElementById('divattachment').style.display = "block";
+						document.getElementById('keyvalue').value = data['iddcrform'];
+						document.getElementById('keyname').value = 'iddcrform';
+						getattachments(data['iddcrform']);
+						tupdate = true;
+						$('#ds').DataTable().ajax.reload(false,false);
+						document.getElementById('myfields').disabled = true;
+						document.getElementById('updatebut').style.display='inline';
+						document.getElementById('savebut').style.display='none';
+						document.getElementById('cancelbut').style.display='none';
+						document.getElementById('printbut').style.display='inline';
+						
+					} else {
+						$.toaster({ priority : 'danger', title : 'Encoded', message : 'Saving Failed.  Please check details'});
+					}
+					
+					$("#mySave").modal("hide");
+					
+			}
+		});
+		
+		//$("#officeModal").modal("hide");
+		
+	}
+	return true;
+}
+
+function cancelthis(thisform){
+	$('#ds').DataTable().ajax.reload(false,false);
+	//document.getElementsByName('myfields').disabled = true;
+	$('#officeModal').modal('hide');
+}
+function routethis(data){
+bootbox.confirm({
+    message: 'For Remarks '+ data['referenceno'] +'?',
+    buttons: {
+        confirm: {
+            label: 'Yes',
+            className: 'btn-danger'
+        },
+        cancel: {
+            label: 'No',
+            className: 'btn-default'
+        }
+    },
+    callback: function (result) {
+        if (result){
+			var tk=qs['tk'];
+			{$.get("forremarksController",{trans:"route",iddcrform:data['iddcrform'],idtrackform:data['idtrackform'],"tk":tk},function(data){
+										if (data['iddcrform']>-1){
+											$.toaster({ priority : 'success', title : 'For Remarks', message : 'Record Routed'});
+									        $('#ds').DataTable().ajax.reload(null,false);} else { $.toaster({ priority : 'danger', title : 'For Remarks', message : 'Record cannot be routed'});}
+										},'json');
+			}
+
+		}
+    }
+});
+}
+function closethis(thisform){
+document.getElementById('details').style.display="none";
+if (tupdate) {
+	$('#ds').DataTable().ajax.reload(false,false);
+	tupdate = false;
+}
+document.getElementById('list').style.display="block";
+}
+function printthis(thisform){
+		thisform.elements.namedItem('myfields').disabled = false;
+		var data = $(thisform).serialize();
+        var xto = thisform.elements.namedItem('to[]');
+        var xtol = xto.length;
+        var office = '';
+        for(i=0; i < xto.length; i++){
+        	if(xto[i].selected){
+        		//alert('value: '+ xto[i].value +' label ' + xto[i].text);
+        		office += 'offcode[] ='+ xto[i].value +' &officename[] =' +xto[i].text+ '&';
+        	}
+        }
+       
+		data +='&'+encodeURI(office);
+		
+		window.open('printController.php?'+ data);
+		thisform.elements.namedItem('myfields').disabled = true;
+
+}
+</script>
+<script src="attachment.js"></script>

@@ -1,0 +1,1256 @@
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="referrer" content="origin">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<link rel="stylesheet" href="main.css">
+<link rel="stylesheet" href="ol.css">
+<style>
+	#map {height: 100%; width:100%;}
+</style>
+
+</head>
+<body>
+<div class="container">
+	<div id="header1"></div>
+	<div id="content">
+		
+	   <div class="paper paper-polar" >
+	   <div class="row">
+			<h4 class="text-center">CARPO - <span id="sofficeA"></span></h4></div>	
+	   </div>
+	   <div id="list">
+	     
+	   
+		<div class="row">
+			<div class="paper paper-polar" >
+			<div class="row">
+			<div class="col-xs-12">
+					<h3>List of Encoded Applications</h3>
+					<table class="table table-hover" id="ds" style="width:100%">
+					<thead><tr><th></th><th>Tracking No</th><th>Applicant</th><th>Date</th><th>Transaction</th><th></th><th></th></tr></thead>
+					<tfoot><tr><th></th><th>Tracking No</th><th>Applicant</th><th>Date</th><th>Transaction</th><th></th><th></th></tr></tfoot>
+					<tbody></tbody>
+					</table>
+					
+				</div>	
+			</div>
+			</div>
+		</div>
+	   </div>	 
+		<div id="ckeditor" class="row" style="display:none">
+				<button class="close" data-dismiss="alert" aria-label="close" onclick="closeck()"><span class="label label-danger">&times;<span></button>
+				<h3 class="text-center" id="ckheader"></h3>
+				<h5>Applicant Name: <label id="ckapplicant"></label> Property Location: <label id="cklocation"></label></h5>
+				<form action="renderCertificationController.php" method="post" id="renderform" target="pdfwindow" >
+							<input type="hidden" name="lsave" id="lsave" value="0">
+							<input type="hidden" name="iddcrform" id="ckiddcrform" >
+							<input type="hidden" name="provincial" id="ckprovincial">
+							<input type="hidden" name="tk" id="cktk">
+							<input type="hidden" name="doctype" id="ckdoctype">
+							<textarea name="ckcontent" id="editor" placeholder="Type the content here">
+          
+							</textarea>
+				</form>		
+					
+		
+					<div class="row">
+						<div class="col-xs-12">
+							<br>
+							<button type="button" class="btn btn-primary" onclick="renderthis()">Preview</button>
+							<button type="button" class="btn btn-success" onclick="saveCert()">Save</button>
+							<br>
+							<button type="button" class="btn btn-danger pull-right" onclick="closeck()">Close</button>
+						</div>
+		
+						<div class="col-xs-12">
+							<br>
+							<div class="alert alert-danger alert-dismissible" role="alert">
+								<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+								<strong>Please enable the pop up window</strong>
+							</div>
+						</div>
+					</div>
+				
+		</div>
+	   <div id="details" style="display:none">
+			<form name="entryform" id="entryform" onfocus="selectload()">
+					<fieldset name="myfields" id="myfields" disabled>
+								<input type="hidden" name="iddcrform" class="iddcrform">
+								<input type="hidden" name="trans" id="trans" class="trans">
+								<input type="hidden" name="tk" id="tk" class="tk">
+								<input type="hidden" name="officecode" id="officecode">
+								<input type="hidden" name="municipaldesc">
+								<input type="hidden" name="municipalcode">
+								<input type="hidden" name="provincial" id="provincial" class="provincial">
+								<input type="hidden" name="regional" id="regional" class="regional">
+								<input type="hidden" name="transaction1">
+							<div class="form-group col-sm-12">
+								<label>Applicant:</label>
+								<input type="text" class="form-control" name="applicant" placeholder="Fullname">
+							</div>
+							<div class="form-group col-sm-12">
+								<label>Address:</label>
+								<input type="text" class="form-control" name="address">
+							</div>
+							<div class="form-group col-sm-12">
+								<label>Email:</label>
+								<input type="email" class="form-control" name="email">
+							</div>
+							<div class="form-group col-sm-12">
+								<label>Mobile No:</label>
+								<input type="text" class="form-control" name="cellno">
+							</div>
+							<div class="form-group col-sm-12">
+								<label>Telephone No:</label>
+								<input type="text" class="form-control" name="telno">
+							</div>
+							<div class="form-group col-sm-12">
+								<label>Registered Owner:</label>
+								<input type="text" class="form-control" name="registeredowners" placeholder="Registered Owner">
+							</div>
+							<div class="form-group col-sm-12">
+								<label>Title No:</label>
+								<input type="text" class="form-control" name="titleno" placeholder="Title No.">
+							</div>
+							<div class="form-group col-sm-12">
+								<label>Area(sqm):</label>
+								<input type="number" class="form-control" name="area" min="0" step="any">
+							</div>
+							<div class="form-group col-sm-12">
+								<label>Tax Declaration:</label>
+								<input type="text" class="form-control" name="tdno" placeholder="TDno">
+							</div>
+							<div class="form-group col-sm-12">
+								<label>Property Location:</label>
+								<input type="text" class="form-control" name="propertylocation" placeholder="Address">
+							</div>
+							
+							<div class="form-group col-sm-12">
+								<label>Latitude:</label>
+								<input type="number" class="form-control" name="latitude" min="0" step="any">
+							</div>
+							<div class="form-group col-sm-12">
+								<label>Longtitude:</label>
+								<input type="number" class="form-control" name="longtitude" min="0" step="any">
+							</div>
+							<div class="col-xs-12"><button type="button" class="btn btn-info" onclick="showmap(this.form)">View Map</button></div>
+							<div class="form-group col-sm-12">
+								<label>Name of Instrument/Conveyance:</label>
+								<input type="text" class="form-control" name="instrument" placeholder="Enter Details">
+							</div>
+							<div class="form-group col-sm-12">
+								<label>Transferor:</label>
+								<input type="text" class="form-control" name="transferor" placeholder="Enter Name">
+							</div>
+							<div class="form-group col-sm-12">
+								<label>Transferees:</label>
+								<input type="text" class="form-control" name="transferees" placeholder="Enter Name">
+							</div>
+							<div class="form-group col-sm-12">
+								<label>Date of Conveyance:</label>
+								<input type="date" class="form-control" name="dateconveyance">
+								
+							</div>
+							<div class="form-group col-sm-12">
+								<label>Place of Conveyance:</label>
+								<input type="text" class="form-control" name="placeconveyance" placeholder="Enter Details">
+							</div>
+							<div class="form-group col-sm-12">
+								<label>Document Number:</label>
+								<input type="text" class="form-control" name="docno" placeholder="Enter Details">
+							</div>
+							<div class="form-group col-sm-12">
+								<label>Page Number:</label>
+								<input type="text" class="form-control" name="pageno" placeholder="Enter Details">
+							</div>
+							<div class="form-group col-sm-12">
+								<label>Book Number:</label>
+								<input type="text" class="form-control" name="bookno" placeholder="Enter Details">
+							</div>
+							<div class="form-group col-sm-12">
+								<label>Year Notarized:</label>
+								<input type="number" class="form-control" name="yrnotarized">
+							</div>
+							<div class="form-group col-sm-12">
+								<label>Notary Public:</label>
+								<input type="text" class="form-control" name="notarypublic" placeholder="Enter Name">
+							</div>
+							<div class="col-sm-12">
+								<label>Transaction Type:</label>
+								<select name="transaction" class="form-control" disabled>
+								    <option value="CLEARANCE" disabled>A.O. 1 - Dar Clearance</option>
+									<option value="LANDClearance">A.O. 4 - Land Transfer Clearance</option>
+									<option value="TRANSFER">A.O. 8 - Order of Transfer</option>
+								</select>
+								
+							</div>
+							
+											
+							<div class="form-group col-sm-12">
+								<label>Date Filed:</label>
+								<input type="date" class="form-control" name="datefiled" >
+							</div>
+							<div class="col-sm-12">
+								<label><input type="checkbox" name="urgent" value="Y">Urgent</label>
+							</div>
+							<div class="form-group col-sm-12">
+								<label>Reference No.:</label>
+								<input type="text" class="form-control" name="referenceno">
+							</div>
+							
+							<div class="col-sm-12">
+								<label>Submitted documents:</label><br>
+								<div class="col-sm-6">
+									<label><input type="checkbox" name="amortization" value="Y">Certificate of Full Payment of Amortization</label><br>
+									<label><input type="checkbox" name="nia" value="Y">Certification regarding Full Payment of Irrigation Fees</label>
+									<label><input type="checkbox" name="loancert" value="Y">Certification regarding Loans</label>
+									<label><input type="checkbox" name="taxclearance" value="Y">Tax clearance</label>
+									<label><input type="checkbox" name="affidavittransferor" value="Y">Affidavit of the transferor</label>
+								</div>
+								<div class="col-sm-6">
+									<label><input type="checkbox" name="affidavitaggregate" value="Y">Affidavit of Aggregate Area</label><br>
+									<label><input type="checkbox" name="taxreturn" value="Y">Certified copy of Income Tax Return</label>
+									<label><input type="checkbox" name="rescert" value="Y">Residence Certificate</label>
+									<label><input type="checkbox" name="assessor" value="Y">Certification by the Provincial Assessor's Office</label>
+								</div>
+							</div>
+							<div class="form-group col-sm-12">
+								<label>Municipal Office:</label>
+								<select name="municipal" class="form-control" onload="selectload()">
+								</select>
+							</div>
+							<div class="form-group col-sm-12">
+								<label>Provincial Office:</label>
+								<input type="text" class="form-control" name="provincialname" readonly>
+							</div>
+							<div class="form-group col-sm-12">
+								<label>Regional Office:</label>
+								<input type="text" class="form-control" name="regionalname" readonly>
+							</div>
+							<div class="form-group col-sm-12">
+								<label for="comment">Remarks:</label>
+								<textarea class="form-control" rows="5" name="remarks"></textarea>
+							</div>
+							<div class="form-group col-sm-12">
+								<label>Prepared by</label>
+								<input type="text" class="form-control" name="preparedby" placeholder="Enter fullname" >
+							</div>
+							
+							
+							
+					</fieldset>
+					<div class="col-xs-12"><button type="button" class="btn btn-info btn-sm" onclick="showmap(this.form)">View Map</button></div>
+					
+					<div class="col-xs-12">
+					<br>
+						<button name="butsave" type="button" onclick="savethis(this.form)" class="btn btn-primary" id="savebut">Save</a>
+						<button name="butupdate" type="button" onclick="updatethis(this.form)" class="btn btn-success" id="updatebut">Update</a>
+						<button name="butprint" type="button" onclick="printthis(this.form)" class="btn btn-primary" id="printbut">Print</a>	
+						<button name="butcancel" type="button" onclick="cancelthis(this.form)" class="btn btn-default" id="cancelbut">Cancel</a>
+						<button name="butclose" type="button" onclick="closethis(this.form)" class="btn btn-danger" id="closebut">Close</a>	
+					</div>	
+			</form>
+			<div class="col-xs-6" id="divattachment">
+						<div class="col-xs-12">
+							<h5>Attachment/s:</h5>
+							<button type="button" class="btn btn-default" onclick="addimages();return false;" id="attachmentbutton">Add Image (max image size is 20mb)</button>
+							<br><br>
+						</div>
+						<div class="col-xs-12">
+							<div id="divimages"></div>
+						</div>
+			</div>
+			<div class="col-xs-6" id="landclearance">
+						
+						<div class="col-xs-12">
+						
+							<h5>Attestation and Recommendation:</h5>
+							<button class="btn btn-default btn-xs marpo" type="button" onclick="Uploadar()">Create Attestation and Recommendation</button>
+							<div class="col-xs-12" id="divdocs"></div>
+							
+							
+						
+						</div>
+						<br>
+							
+								<label style="font-style:italic">Please enable the popup window</label>
+						<br><br>
+						
+			</div>
+		</div>
+	  
+		
+		
+	   
+	</div>
+</div>
+<div id="header"></div>
+
+
+<div id="mySave" class="modal fade" role="dialog">
+  <div class="modal-dialog modal-sm">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      
+      <div class="modal-body">
+		  <img class="img-responsive center-block" alt="saving" src="images/saving.gif">
+		  <div class="col-xs-12" style="text-align:center"><span>Saving Please Wait</span></div>
+	  </div>
+      
+    </div>
+
+  </div>
+</div>
+
+<div id="myRoute" class="modal fade" role="dialog">
+  <div class="modal-dialog modal-sm">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      
+      <div class="modal-body">
+		  <img class="img-responsive center-block" alt="routing" src="images/saving.gif">
+		  <div class="col-xs-12" style="text-align:center"><span>Routing Please Wait</span></div>
+	  </div>
+      
+    </div>
+
+  </div>
+</div>
+<div id="myLoad" class="modal fade" role="dialog">
+  <div class="modal-dialog modal-sm">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      
+      <div class="modal-body">
+		  <img class="img-responsive center-block" alt="routing" src="images/saving.gif">
+		  <div class="col-xs-12" style="text-align:center"><span>Loading Please Wait</span></div>
+	  </div>
+      
+    </div>
+
+  </div>
+</div>
+
+<div id="myMap" class="modal" role="dialog">
+  <div class="modal-dialog modal-lg">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+      </div>
+      <div class="modal-body">
+		<div class="row"><div id="map" class="map"></div><div id="popup"></div></div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+</div>
+
+<div id="myDetails" class="modal" role="dialog">
+  <div class="modal-dialog modal-lg">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+		<label>Enter details for disapproval</label>
+      </div>
+      <div class="modal-body">
+		<div class="row">
+			<form>
+				<input type="hidden" name="disidtrackform">
+				<input type="hidden" name="disiddcrform">
+				<div class="col-xs-12"><textarea class="form-control" rows="3" name="disdetails"></textarea><br></div>
+				<div class="col-xs-12"><button type="button" class="btn btn-primary" onclick="savedisdetails()">Save</button></div>
+			</form>
+		</div>
+		
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+</div>
+
+<section><div id="attachmentdiv"></div></section>
+</body>
+<script src="jquery.min.js"></script>
+<script src="bootstrap.min.js"></script>
+<script src="jquery.dataTables.min.js"></script>
+<script src="Buttons/js/buttons.print.min.js"></script>
+<script src="jquery.toaster.js"></script>
+<script src="bootbox.min.js"></script>
+<script src="ol.js"></script>
+<script src="main1.js"></script>
+<script src="ckeditor/build/ckeditor.js"></script>
+<script>
+ClassicEditor
+			.create( document.querySelector( '#editor' ), {
+				
+				toolbar: {
+					items: [
+						'heading',
+						'|',
+						'bold',
+						'italic',
+						'link',
+						'bulletedList',
+						'numberedList',
+						'|',
+						'outdent',
+						'indent',
+						'|',
+						'imageUpload',
+						'blockQuote',
+						'insertTable',
+						'mediaEmbed',
+						'undo',
+						'redo',
+						'CKFinder',
+						'alignment',
+						'fontBackgroundColor',
+						'fontColor',
+						'fontSize',
+						'fontFamily',
+						'highlight',
+						'horizontalLine',
+						'pageBreak',
+						'removeFormat',
+						'specialCharacters',
+						'strikethrough',
+						'subscript',
+						'superscript',
+						'underline',
+						'lineHeight'
+					]
+				},
+				language: 'en',
+				image: {
+					toolbar: [
+						'imageTextAlternative',
+						'imageStyle:full',
+						'imageStyle:side'
+					]
+				},
+				table: {
+					contentToolbar: [
+						'tableColumn',
+						'tableRow',
+						'mergeTableCells',
+						'tableCellProperties',
+						'tableProperties'
+					]
+				},
+				licenseKey: '',
+				ckfinder: {openerMethod: 'popup'}
+				
+			} )
+			.then( editor => {
+				window.editor = editor;
+				
+			} )
+			.catch( error => {
+				console.error( error );
+			} );
+			
+var tupdate = false;
+var seen = false;
+let stemplate ='';
+function uploadtemplate(){
+let tk = qs['tk'];
+$.get('carpoController.php',{"trans":"loadtemplate","tk":tk}, function (d){
+		let data = d['template'];
+		stemplate = data;
+	},'json');
+}
+function startload() {
+	initmunicipal();
+	document.getElementById('sofficeA').innerHTML = soffice+" PROVINCIAL OFFICE";
+	var caption = "DAR Region XI, "+soffice+" PROVINCIAL OFFICE";
+	var today = new Date();
+	var asDate = new Date();
+	var options = { year: 'numeric', month: 'long', day: 'numeric' };
+	var stoday = today.toLocaleDateString("en-US", options);
+	
+	
+	var tk=qs['tk'];
+	var table = $('#ds').DataTable( {
+		"ajax": "carpoController.php?trans=getdetails&tk="+tk+"&officecode="+soffice,
+		"dom": 'lfrtBip', 
+		"buttons": [
+            "copy", 
+			{extend:"excelHtml5","title" : "List of Encoded Applications", "messageTop": caption, "messageBottom": "\n Prepared by: "+ fullname + " " +stoday, "footer":true}, 
+			{extend: 'pdf', 
+			title : 'List of Encoded Applications'
+			, messageTop: caption, messageBottom: '\n Prepared by: '+ fullname + ' ' +stoday, footer:true},
+			{extend: 'print',
+			title : 'List of Encoded Applications',
+			 messageTop: caption, messageBottom: '\n Prepared by: '+ fullname + ' ' +stoday, footer:true
+			
+			}
+        ],
+        "columns": [
+            {"className":      'details-control',
+												 "orderable":      false,
+												 "data":           null,
+												 "defaultContent": ''},
+			{ "data": "iddcrform"},
+			{ "data": "applicant"},
+			{ "data": "datefiled"},
+			{ "data": "transaction"},
+			{ "data": function (d) {return seen1(d);} },
+			{ "data": function (d) {return actions(d);} }
+			
+        ],
+        "order": [[3, 'desc']]
+    } );
+	
+	
+	
+	$('#ds tbody').on('click', 'td.details-control', function () {
+		
+         var tr = $(this).closest('tr');
+        var row = table.row( tr );
+ 
+        if ( row.child.isShown() ) {
+            
+            
+			if (seen){$('#ds').DataTable().ajax.reload(null,false);
+				seen = false;
+			} else {
+				row.child.hide();
+				tr.removeClass('shown');
+			};
+			
+        }
+		
+        else {
+            if ( table.row( '.shown' ).length ) {
+                  $('.details-control', table.row( '.shown' ).node()).click();
+				  //$('.maindiv').hide();
+				  //$( '.shown' ).removeClass('shown');
+			}
+            row.child( format(row.data())).show();
+            tr.addClass('shown');
+			getchild(row.data());
+			setseen(row.data());
+        }
+		
+    } );
+	
+	
+	
+	uploadtemplate();
+	startattachment();
+	initload();
+}
+function initmunicipal(){
+let tk = qs['tk'];
+$.get("darpoController.php",{trans:"offices","tk":tk,"officecode":soffice},function(data){
+										if (data['error']) {
+											$.toaster({ priority : 'danger', title : 'DARPO', message : 'Invalid User'});
+											document.getElementById('list').style.display="none";
+											
+										} else {
+										let lmunicipal = data['municipal'];
+										var provincial = data['provincial'];
+										var regional = data['regional'];
+										//document.getElementsByName('municipalname')[0].value = municipal['officename'];
+										let selmun = document.getElementsByName('municipal')[0];
+										selmun.innerHTML ='';
+										let nlength = lmunicipal.length
+										let xmunicipaldesc = "";
+										let xmunicipalcode ="";
+										
+										for(i=0; i < nlength; i++){
+											var row = lmunicipal[i];
+											var optn = document.createElement('option');
+											optn.text = row['officename'];
+											optn.value = row['idoffice'];
+											selmun.appendChild(optn);
+											xmunicipaldesc += row['officename']+',';
+											xmunicipalcode += row['idoffice']+',';
+											
+											//alert(row['officename']);
+										}
+										
+										//alert('select2:'+selmun.options.length);
+										//setTimeout(function(){}, 9000);
+										selmun.selectedIndex = -1;
+										
+										document.getElementsByName('municipaldesc')[0].value = xmunicipaldesc;
+										document.getElementsByName('municipalcode')[0].value = xmunicipalcode;
+										document.getElementsByName('provincialname')[0].value = provincial['officename'];
+										document.getElementsByName('regionalname')[0].value = regional['officename'];
+										document.getElementsByName('officecode')[0].value = soffice;
+										//$(".municipal").val(data['idofficemunicipal']);
+										$(".provincial").val(data['idofficeprovincial']);
+										$(".regional").val(data['idofficeregional']);
+										
+										}
+										},'json');
+
+}
+
+function setseen(d){
+	$.get("darpoController.php",{"trans":"seen","idtrackform":d['idtrackform'],"tk":qs['tk']}, function (d){
+		
+		if (d['seen']==0) {seen=true;}
+	},'json');
+}
+function actions(row){
+	var buttons ='';
+	                     
+	
+	//unremarks this if municipal is required 
+	var municipalkey = "'"+row['idtrackform']+"','"+row['iddcrform']+"','"+row['municipal']+"','"+row['details']+"','"+row['provincialname']+"'";
+	var provincialkey = "'"+row['idtrackform']+"','"+row['iddcrform']+"','"+row['provincial']+"','"+row['details']+"','"+row['provincialname']+"'";
+
+	var regionalkey =  "'"+row['idtrackform']+"','"+row['iddcrform']+"','"+row['regional']+"','"+row['details']+"','"+row['provincialname']+"'";
+	if (row['transaction']=='TRANSFER'){
+		buttons ='<button type="button" onclick="municipal('+municipalkey+')" data-toggle="tooltip" title="DARMO" class="btn btn-link"><span class="glyphicon glyphicon-repeat"></span></button> <button type="button" onclick="appeals('+regionalkey+')" data-toggle="tooltip" title="Disapprove" class="btn btn-link"><span class="glyphicon glyphicon-thumbs-down"></span></button> <button type="button" onclick="regional('+regionalkey+')" data-toggle="tooltip" title="forLegal" class="btn btn-link"><span class="glyphicon glyphicon-send"></span></button>';
+	} else {	
+		buttons +='<button type="button" onclick="DARPO('+provincialkey+')" data-toggle="tooltip" title="forDARPO" class="btn btn-link"><span class="glyphicon glyphicon-repeat"></span></button>';	
+	    buttons +='<button type="button" onclick="CHIEFLEGAL('+provincialkey+')" data-toggle="tooltip" title="forChiefLegal" class="btn btn-link"><span class="glyphicon glyphicon-send"></span></button>';
+	}
+	return buttons;
+	
+	
+}
+
+function seen1(d){
+var data='';
+	if (d['seen']!=0){
+		data = "<span class='glyphicon glyphicon-eye-open'></span>";
+	} 
+	return data;
+}
+
+function format(row){
+var iddcrform = row['iddcrform'];
+var track = "track"+row['iddcrform'];
+
+var elem = document.getElementById(iddcrform);
+if (elem){
+  elem.parentNode.removeChild(iddcrform);
+}
+var elem2 = document.getElementById(track);
+if (elem2){
+  elem2.parentNode.removeChild(track);
+}
+  return '<div class="maindiv"><div class="col-xs-12" id="'+iddcrform+'"></div><div class="col-xs-12" id="'+track+'"></div></div>';
+}
+
+function getchild(data){
+var iddcrform = '#'+data['iddcrform'];
+
+var tform = document.getElementById('form'+data['iddcrform']);
+if (tform){
+	tform.parentNode.removeChild('form'+data['iddcrform']);
+}
+var nform = $('#entryform').clone(true).prop('id','form'+data['iddcrform']);
+nform.appendTo( iddcrform );
+loadchild(data);
+let nform1 = $('#divattachment').clone(true);
+	nform1.appendTo( iddcrform );
+	document.getElementById('divattachment').style.display = "block";
+	document.getElementById('keyvalue').value = data['iddcrform'];
+	document.getElementById('keyname').value = 'iddcrform';
+	getattachments(data['iddcrform']);
+	
+	document.getElementById('ckiddcrform').value = data['iddcrform'];
+	document.getElementById('cktk').value = qs['tk'];
+	document.getElementById('ckapplicant').innerHTML = data['applicant'];
+	document.getElementById('cklocation').innerHTML = data['propertylocation'];
+	let xorderform = $('#landclearance').clone(true);
+	xorderform.appendTo( iddcrform );
+	document.getElementById('landclearance').style.display ="block";
+	getcert(data);
+	
+	initload();
+	getcase(data['iddcrform'],data['municipal'],data['regional'],data['provincial'], data['transaction']);
+	$('#myLoad').modal('show');
+	//setTimeout(initselect(data), 3000);
+$('#myLoad').modal('hide');
+
+}
+function loadchild(data){
+
+
+var x = document.getElementById('form'+data['iddcrform']);
+
+	
+	x.elements.namedItem('tk').value=qs['tk'];
+	x.elements.namedItem('trans').value='UPDATE';
+	x.elements.namedItem('iddcrform').value=data['iddcrform'];
+	
+	
+	x.elements.namedItem('provincial').value=data['provincial'];
+	x.elements.namedItem('regional').value=data['regional'];
+	//x.elements.namedItem('municipalname').value=data['municipalname'];
+	x.elements.namedItem('provincialname').value=data['provincialname'];
+	x.elements.namedItem('regionalname').value=data['regionalname'];
+	x.elements.namedItem('address').value= data['address'];
+	x.elements.namedItem('applicant').value= data['applicant'];
+	x.elements.namedItem('email').value= data['email'];
+	x.elements.namedItem('cellno').value= data['cellno'];
+	x.elements.namedItem('telno').value= data['telno'];
+	//x.elements.namedItem('transaction').value= data['transaction'];
+	x.elements.namedItem('propertylocation').value= data['propertylocation'];
+	x.elements.namedItem('longtitude').value= data['longtitude'];
+	x.elements.namedItem('latitude').value= data['latitude'];
+	x.elements.namedItem('referenceno').value= data['referenceno'];
+	x.elements.namedItem('transaction').value= data['transaction'];
+	x.elements.namedItem('remarks').value= data['remarks'];
+	x.elements.namedItem('preparedby').value= data['preparedby'];
+	x.elements.namedItem('datefiled').value= data['datefiled'];
+	if (data['urgent']=='Y'){
+		x.elements.namedItem('urgent').checked = true;
+	} else {
+		x.elements.namedItem('urgent').checked = false;
+	}
+	if (data['amortization']=='Y'){
+		x.elements.namedItem('amortization').checked = true;
+	} else {
+		x.elements.namedItem('amortization').checked = false;
+	}
+	if (data['nia']=='Y'){
+		x.elements.namedItem('nia').checked = true;
+	} else {
+		x.elements.namedItem('nia').checked = false;
+	}
+	if (data['taxclearance']=='Y'){
+		x.elements.namedItem('taxclearance').checked = true;
+	} else {
+		x.elements.namedItem('taxclearance').checked = false;
+	}
+	if (data['affidavittransferor']=='Y'){
+		x.elements.namedItem('affidavittransferor').checked = true;
+	} else {
+		x.elements.namedItem('affidavittransferor').checked = false;
+	}
+	if (data['affidavitaggregate']=='Y'){
+		x.elements.namedItem('affidavitaggregate').checked = true;
+	} else {
+		x.elements.namedItem('affidavitaggregate').checked = false;
+	}
+	if (data['loancert']=='Y'){
+		x.elements.namedItem('loancert').checked = true;
+	} else {
+		x.elements.namedItem('loancert').checked = false;
+	}
+	if (data['taxreturn']=='Y'){
+		x.elements.namedItem('taxreturn').checked = true;
+	} else {
+		x.elements.namedItem('taxreturn').checked = false;
+	}
+	if (data['rescert']=='Y'){
+		x.elements.namedItem('rescert').checked = true;
+	} else {
+		x.elements.namedItem('rescert').checked = false;
+	}
+	if (data['assessor']=='Y'){
+		x.elements.namedItem('assessor').checked = true;
+	} else {
+		x.elements.namedItem('assessor').checked = false;
+	}
+	
+	x.elements.namedItem('myfields').disabled = true;
+	//if (data['transaction']=='TRANSFER'){
+	//	x.elements.namedItem('butupdate').style.display='inline';
+	//} else {
+	//	x.elements.namedItem('butupdate').style.display='none';
+	//}
+	x.elements.namedItem('butupdate').style.display='none';
+	x.elements.namedItem('butsave').style.display='none';
+	x.elements.namedItem('butcancel').style.display='none';
+	x.elements.namedItem('butclose').style.display='inline';
+	x.elements.namedItem('butprint').style.display='inline';
+	if (x.elements.namedItem('municipal').length == 0 ){
+		let xmunicipalcode = x.elements.namedItem('municipalcode').value.split(',');
+		let xmunicipaldesc = x.elements.namedItem('municipaldesc').value.split(',');
+		let nlength = xmunicipalcode;
+		for(i=0; i < nlength; i++){
+			if (xmunicipalcode[i]){
+				x.elements.namedItem('municipal').innerHTML ='';
+				let optn = document.createElement('option');
+					optn.text = xmunicipaldesc[i];
+					optn.value = xmunicipalcode[i];
+					x.elements.namedItem('municipal').appendChild(optn);
+											
+			}								
+											//alert(row['officename']);
+		}
+	}
+	
+    x.elements.namedItem('municipal').value=data['municipal'];
+	if (data['transaction']=='LANDClearance'){ x.elements.namedItem('municipal').value="";}
+	x.elements.namedItem('registeredowners').value= data['registeredowners'];
+	x.elements.namedItem('titleno').value= data['titleno'];
+	x.elements.namedItem('area').value= data['area'];
+	x.elements.namedItem('tdno').value= data['tdno'];
+	x.elements.namedItem('instrument').value= data['instrument'];
+	x.elements.namedItem('transferor').value= data['transferor'];
+	x.elements.namedItem('transferees').value= data['transferees'];
+	x.elements.namedItem('dateconveyance').value= data['dateconveyance'];
+	x.elements.namedItem('placeconveyance').value= data['placeconveyance'];
+	x.elements.namedItem('docno').value= data['docno'];
+	x.elements.namedItem('pageno').value= data['pageno'];
+	x.elements.namedItem('bookno').value= data['bookno'];
+	x.elements.namedItem('yrnotarized').value= data['yrnotarized'];
+	x.elements.namedItem('notarypublic').value= data['notarypublic'];
+	
+	
+	
+	
+}
+
+
+function getcase(iddcrform,municipal,regional,provincial,transaction){
+var tk=qs['tk'];
+$.get("darpoController.php",{trans:"getcase","tk":tk,"iddcrform":iddcrform,"municipal":municipal,"regional":regional,"provincial":provincial},function(data){
+										var nlast = data['trackform'].length-1;
+										
+										var bfound = false;
+										var scontent ='';
+										
+										var nlength = data['trackform'].length
+										var today = new Date(); 
+										var municipal = data['municipal'];
+										var regional = data['regional'];
+										let provincial = data['provincial'];
+										for(i=0; i < nlength; i++){
+										
+											var row = data['trackform'][i];
+											var officename = row['officename'];
+											bfound = true;
+											if (nlast == i){
+												scontent +="<div class='shadow-sm p-3 mb-5 bg-white rounded'>";
+												scontent += "<form id='testform'>";
+												scontent += '<input type="hidden" name="idtrackform" value="'+row['idtrackform']+'">';
+												scontent += '<input type="hidden" name="trans" value="savedetails">';
+												scontent += '<input type="hidden" name="tk" value="'+qs['tk']+'">';
+												var startdate = new Date(row['startdate']);
+												var duration = datedifference(startdate, today,10,'DAYS')
+												scontent += "<label><small>Status:</small> "+row['status']+"  <small>Date :</small> "+row['startdate']+"  <small>Duration:</small> "+ duration+ "</label><br>";
+												scontent += '<div class="form-group">';
+												scontent += "<label>Details :</label>";
+												var sdetails = row['details'];
+												if (!sdetails) {sdetails ='';}
+												scontent += '<textarea class="form-control" rows="3" name="details">'+sdetails+'</textarea>';
+												//scontent += '<input type="text" class="form-control" name="details" value ="'+sdetails+'">';
+												scontent += "</div>";
+												
+												iddcrform = row['iddcrform'];
+												scontent += '<div class="col-md-1"><button type="button" onclick="savedetails(this.form)" class="btn btn-primary">Save</a></div>';
+												var provincialkey = "'"+row['idtrackform']+"','"+row['iddcrform']+"','"+provincial+"','"+row['details']+"','"+officename+"',this.form";
+												var municipalkey = "'"+row['idtrackform']+"','"+row['iddcrform']+"','"+municipal+"','"+row['details']+"','"+officename+"',this.form";
+												var regionalkey = "'"+row['idtrackform']+"','"+row['iddcrform']+"','"+regional+"','"+row['details']+"','"+officename+"',this.form";
+												// unremarks this if municipal is required - scontent += '<div class="col-md-11"><span class="pull-right"><button type="button" onclick="municipal('+municipalkey+')" data-toggle="tooltip" title="DARMO" class="btn btn-link"><span class="glyphicon glyphicon-repeat"></span></button>';
+												if (transaction=='TRANSFER'){
+													scontent += '<button type="button" onclick="municipal('+municipalkey+')" data-toggle="tooltip" title="DARMO" class="btn btn-link"><span class="glyphicon glyphicon-repeat"></span></button>';
+													scontent += '<button type="button" onclick="appeals('+regionalkey+')" data-toggle="tooltip" title="Disapprove" class="btn btn-link"><span class="glyphicon glyphicon-thumbs-down"></span></button>';
+													scontent += '<button type="button" onclick="regional('+regionalkey+')" data-toggle="tooltip" title="forLegal" class="btn btn-link"><span class="glyphicon glyphicon-send"></span></button>';
+												} else {
+													scontent += '<button type="button" onclick="DARPO('+provincialkey+')" data-toggle="tooltip" title="forDARPO" class="btn btn-link"><span class="glyphicon glyphicon-repeat"></span></button>';
+													scontent += '<button type="button" onclick="CHIEFLEGAL('+provincialkey+')" data-toggle="tooltip" title="forChiefLegal" class="btn btn-link"><span class="glyphicon glyphicon-send"></span></button>';
+												}
+												scontent += "</span></div></form></div>";
+											} else {
+												// remarks this if Municipal is required
+												if (row['status']=='DARMO') { let xtag = true; } 
+												else {
+												scontent += '<div class="col-xs-12 well">';
+												var startdate = new Date(row['startdate']);
+												var enddate = new Date(row['enddate']);
+												var duration = datedifference(startdate, enddate);
+												let ncounter = i+1;
+												scontent +="<label><small>"+ncounter+". Office: </small><span class='label label-info'>"+row['officename']+"</span></label><br>";
+												scontent += "<label><small>Status:</small> "+row['status']+"  <small>Period from: </small>"+row['startdate']+" to "+ row['enddate']+ "  <small> Elapsed Time:</small> "+ duration+ "</label><br>";
+												if (row['firstseen']) {scontent += "<label><small>First Seen by:</small> <span class='label label-default'> "+row['firstseen']+" </span> - ";}
+												scontent += "<label><small>Processed by: </small></label> <span class='label label-default'> "+row['fullname']+" </span><br>";
+												scontent += "<label>Details: </label>";
+												scontent += "<p>"+row['details']+"</p>";
+												scontent += '</div>';
+												}
+											}
+											
+										}
+										if (bfound){
+												document.getElementById('track'+iddcrform).innerHTML = scontent;
+												initload();
+											}
+										},'json');
+}
+
+function showmap(thisform){
+$("#myMap").modal("show");
+	var lat = thisform.elements.namedItem('latitude').value;
+	var lon = thisform.elements.namedItem('longtitude').value;
+	
+	var propertylocation = thisform.elements.namedItem('propertylocation').value;
+	if (lat == 0 && lon == 0){
+		lat = 7.07221;
+		
+		//7.0567022;
+		//
+		lon = 125.52210;
+		//125.6016536;
+		//
+		propertylocation = "Department Of Agrarian Reform Regional Office XI";
+		
+	}
+	
+	
+	
+	var layer = new ol.layer.Vector({
+     source: new ol.source.Vector({
+         features: [
+             new ol.Feature({
+                 geometry: new ol.geom.Point(ol.proj.fromLonLat([lon, lat]))
+             })
+         ]
+			 
+		})
+		
+	 });
+	var map = new ol.Map({
+        target: 'map',
+        layers: [
+          new ol.layer.Tile({
+            source: new ol.source.OSM()
+          })
+        ],
+        view: new ol.View({
+          center: ol.proj.fromLonLat([lon, lat]),
+          zoom: 17
+        })
+		
+      });
+	
+	
+	 var container = document.getElementById('popup');
+	 
+
+	var overlay = new ol.Overlay({
+     element: container,
+     autoPan: true,
+     autoPanAnimation: {
+         duration: 250
+     }
+ });
+ 
+	map.addOverlay(overlay);
+	container.innerHTML = '<img src="images/marker.png"><b>'+propertylocation+'</b>';
+	overlay.setPosition(ol.proj.fromLonLat([lon, lat]));
+
+}
+
+
+function cancelthis(thisform){
+	$('#ds').DataTable().ajax.reload(null,false);
+	
+}
+function savedetails(thisform){
+$("#mySave").modal("show");
+var data = $(thisform).serialize();
+$.get("darpoController.php",data,function(data){
+											$.toaster({ priority : 'success', title : 'Received', message : 'Record Updated'});
+											$("#mySave").modal("hide");
+									        //$('#ds').DataTable().ajax.reload(null,false);
+										},'json');
+}
+function savedisdetails(){
+	let details = document.getElementsByName('disdetails')[0].value;
+	let y = document.getElementsByName('details');
+	if (y){
+		y.value = details;
+	}
+	let idtrackform = document.getElementsByName('disidtrackform')[0].value;
+	let iddcrform = document.getElementsByName('disiddcrform')[0].value;
+	let tk = qs['tk'];
+	$.get("darpoController.php",{"tk":tk,"idtrackform":idtrackform,"details":details,"trans":"disapproveclearance","officecode":soffice,"iddcrform":iddcrform},function(data){
+											$.toaster({ priority : 'success', title : 'Received', message : 'Record disaproved and returned to client'});
+											$("#myDetails").modal("hide");
+									        $('#ds').DataTable().ajax.reload(null,false);
+										},'json');
+	$.get("sendController.php",{"trans":"disapproved3","officecode":soffice,"iddcrform":iddcrform,"details":details});
+										
+}
+
+
+function closethis(thisform){
+document.getElementById('details').style.display="none";
+if (tupdate) {
+	//$('#ds').DataTable().ajax.reload(false,false);
+	tupdate = false;
+}
+document.getElementById('list').style.display="block";
+}
+
+
+function CHIEFLEGAL(idtrackform,iddcrform,provincial,details,officename,thisform){
+bootbox.confirm({
+    message: 'Forward to  Chief Legal?',
+    buttons: {
+        confirm: {
+            label: 'Yes',
+            className: 'btn-danger'
+        },
+        cancel: {
+            label: 'No',
+            className: 'btn-default'
+        }
+    },
+    callback: function (result) {
+        if (result){
+			if (thisform){
+				
+				details = thisform.elements.namedItem('details').value;
+				
+			}
+			$("#myRoute").modal("show");
+			var tk=qs['tk'];
+			{$.get("darpoController.php",{trans:"forCHIEFLEGAL","iddcrform":iddcrform,"idtrackform":idtrackform,"provincial":provincial,"details":details,"officename":officename,"tk":tk},function(d){
+											var officecode = d['officecode'];
+											var role = d['role'];
+											var iddcrform = d['iddcrform'];
+											var officename =d['officename'];
+											$.get("sendController.php",{"officecode":officecode,"role":role,"iddcrform":iddcrform,"officename":officename});
+											//$.get("sendController.php",{"officecode":officecode,"role":role,"iddcrform":iddcrform,"officename":officename,"trans":"notifyac"});
+											
+											$.toaster({ priority : 'success', title : 'CARPO', message : 'Record forwarded to Chief Legal'});
+									        $('#ds').DataTable().ajax.reload(null,false);
+											$("#myRoute").modal("hide");
+										},'json');
+			}
+
+		}
+    }
+});
+}
+function DARPO(idtrackform,iddcrform,provincial,details,officename,thisform){
+bootbox.confirm({
+    message: 'Return to DARPO?',
+    buttons: {
+        confirm: {
+            label: 'Yes',
+            className: 'btn-danger'
+        },
+        cancel: {
+            label: 'No',
+            className: 'btn-default'
+        }
+    },
+    callback: function (result) {
+        if (result){
+			if (thisform){
+				
+				details = thisform.elements.namedItem('details').value;
+				
+			}
+			$("#myRoute").modal("show");
+			var tk=qs['tk'];
+			{$.get("darmoController.php",{trans:"forDARPO","iddcrform":iddcrform,"idtrackform":idtrackform,"provincial":provincial,"details":details,"officename":officename,"tk":tk},function(d){
+											var officecode = d['officecode'];
+											var role = d['role'];
+											var iddcrform = d['iddcrform'];
+											var officename =d['officename'];
+											$.get("sendController.php",{"officecode":officecode,"role":role,"iddcrform":iddcrform,"officename":officename});
+											$.toaster({ priority : 'success', title : 'CARPO', message : 'Record returned to DARPO'});
+									        $('#ds').DataTable().ajax.reload(null,false);
+											$("#myRoute").modal("hide");
+										},'json');
+			}
+
+		}
+    }
+});
+}
+function Uploadar(){
+document.getElementById('ckheader').innerHTML="Attestation and Recommendation";
+let iddcrform = document.getElementById('ckiddcrform').value;
+let x = document.getElementById('form'+iddcrform);
+
+document.getElementById('ckdoctype').value ="ireport";
+document.getElementById('list').style.display = "none";
+document.getElementById('ckeditor').style.display = "block";
+document.body.scrollTop = 0; // For Safari
+document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
+//let xapplicant = x.elements.namedItem('applicant').value;
+
+let xowner = x.elements.namedItem('registeredowners').value;
+let xtd = x.elements.namedItem('tdno').value;
+let xtitleno = x.elements.namedItem('titleno').value;
+let xarea = x.elements.namedItem('area').value;
+let xpropertylocation = x.elements.namedItem('propertylocation').value;
+let xdate = new Date();
+let xday = xdate.toLocaleString('default',{day:'numeric'});
+let xmonth = xdate.toLocaleString('default',{month:'long'});
+let xyear = xdate.toLocaleString('default',{year:'numeric'});
+let content = stemplate.replace("$owner",xowner);
+content = content.replace("$tdno",xtd);
+xarea = parseFloat(xarea) /10000;
+content = content.replace("$area",xarea);
+content = content.replace("$titleno",xtitleno);
+content = content.replace("$location",xpropertylocation);
+content = content.replace("$date",xmonth+" "+xday+", "+xyear);
+content = content.replace("$preparedby",fullname);
+editor.setData(content);
+
+}
+function renderthis(){
+	document.getElementById("ckprovincial").value = soffice;
+	let params = 'menubar=no,width=0, height=0`,location=no, status=no, toolbar=no';
+	document.getElementById('lsave').value = "0";
+	window.open('','pdfwindow',params);
+	document.getElementById("renderform").submit();
+	
+}
+function saveCert(){
+	document.getElementById("ckprovincial").value = soffice;
+	let params = 'menubar=no,width=0, height=0`,location=no, status=no, toolbar=no';
+	document.getElementById('lsave').value = "1";
+	window.open('','pdfwindow',params);
+	document.getElementById("renderform").submit();
+	bootbox.alert('Certification saved');
+	let iddcrform = document.getElementById('ckiddcrform').value;
+	//getcert2(iddcrform);
+	
+}
+
+function getcert(data){
+
+											let ireport = data['ireport'];
+											let scontent ='';
+											if (ireport=='null'){ireport='';}
+											if (ireport){
+												
+												let iddcrform = "'"+data['iddcrform']+"'";
+												let docdet ="'"+data['ireport']+"','"+data['iddcrform']+"','clearance'";
+												
+												scontent += '<span class="glyphicon glyphicon-file"></span><button type="button" onclick="showpdf('+iddcrform+')" class="btn btn-link">'+data['ireport']+'</button>';
+												if (data['signedcarpocert']=='0'){
+													scontent += '<button type="button" onclick="signpdf('+docdet+')" class="btn btn-primary btn-xs">Sign</button>';
+												}
+												scontent += '<button type="button" onclick="deletepdf('+iddcrform+')" class="btn btn-danger btn-xs">Remove</button><br>';
+												
+											}
+											document.getElementById('divdocs').innerHTML = scontent;
+											
+
+}
+function getcert2(iddcrform){
+let tk = qs['tk'];
+
+$.get("carpoController.php",{"trans":"getcert","tk":tk,"iddcrform":iddcrform},function(data){
+											let ireport = data['ireport'];
+											let scontent ='';
+											if (ireport!==''){
+												let iddcrform = "'"+data['iddcrform']+"'";
+												let docdet ="'"+data['ireport']+"','"+data['iddcrform']+"','clearance'";
+												
+												scontent += '<span class="glyphicon glyphicon-file"></span><button type="button" onclick="showpdf('+iddcrform+')" class="btn btn-link">'+data['ireport']+'</button>';
+												if (data['signedcarpocert']=='0'){
+													scontent += '<button type="button" onclick="signpdf('+docdet+')" class="btn btn-primary btn-xs">Sign</button>';
+												}
+												scontent += '<button type="button" onclick="deletepdf('+iddcrform+')" class="btn btn-danger btn-xs">Remove</button><br>';
+												
+											}
+											
+											document.getElementById('divdocs').innerHTML = scontent;
+											
+											
+										},'json');
+}
+function showpdf(iddcrform){
+let params = 'menubar=no,width=0, height=0`,location=no, status=no, toolbar=no';
+let tk=qs['tk'];
+	window.open('carpoController.php?iddcrform='+iddcrform+"&tk="+tk+"&trans=showpdf",'pdfwindow',params);
+}
+
+
+function signpdf(filename,iddcrform, doctype){
+let keyword = fullname;
+$("#mySign").modal("show");
+$.get("searchpdfController4.php",{"tk":tk,"keyword":keyword,"filename":filename,"iddcrform":iddcrform,"doctype":doctype},function(data){
+											let page = data;
+											if(page['pagenumber']>0 ){
+												
+													let x = page['cX'];
+													let y = page['cY'];
+													let filename = page['filename'];
+													let signature = signimage;
+													let iddcrform = page['iddcrform'];
+													let pagenumber = page['pagenumber'];
+													let idorderdoc = page['idorderdoc'];
+													let doctype=page['doctype'];
+													if (!signature){
+														$("#mySign").modal("hide");
+														bootbox.alert('Failed to sign. User signature not registered');
+														
+													} else {
+														let tk = qs['tk'];
+														$.get("signdocController4.php",{"tk":tk,"x":x,"y":y,"filename":filename,"pagenumber":pagenumber,"sigimage":signature,"iddcrform":iddcrform,"tk":tk,"fullname":fullname,"doctype":doctype},function(data){
+															$("#mySign").modal("hide");
+															bootbox.alert('Document signed');
+															getcert2(data['iddcrform']);
+															
+														},'json');
+													}
+											
+											
+											}else {
+													$("#mySign").modal("hide");
+													bootbox.alert('Failed to sign. Signatory name not found');
+													
+											}},'json');
+
+
+}
+function deletepdf(iddcrform){
+let tk = qs['tk'];
+bootbox.confirm({
+    message: 'Delete this document?',
+    buttons: {
+        confirm: {
+            label: 'Yes',
+            className: 'btn-danger'
+        },
+        cancel: {
+            label: 'No',
+            className: 'btn-default'
+        }
+    },
+    callback: function (result) {
+        if (result){
+			$.get("carpoController.php",{"trans":"deletepdf","tk":tk,"iddcrform":iddcrform},function(data){
+											bootbox.alert('Document Deleted');
+											getcert2(data['iddcrform']);
+											},'json');
+
+
+		}
+    }
+});
+}
+function closeck(){
+let iddcrform = document.getElementById('ckiddcrform').value;
+	getcert2(iddcrform);
+document.getElementById('list').style.display = "block";
+document.getElementById('ckeditor').style.display = "none";
+}
+</script>
+<script src="attachment.js"></script>

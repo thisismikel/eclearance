@@ -1,0 +1,455 @@
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="main.css">
+
+</head>
+<body>
+<div class="container">
+	<div id="header1"></div>
+	<div id="content">
+		
+	   <div class="paper paper-polar" >
+	   <div class="row">
+			<h4 class="text-center">Received</h4></div>	
+	   </div>
+	   <div id="list">
+	     
+	   
+		<div class="row">
+			<div class="paper paper-polar" >
+			<div class="row">
+			<div class="col-xs-12">
+					<h3>Received Forms</h3>
+					<table class="table table-hover" id="ds" style="width:100%">
+					<thead><tr><th></th><th>Reference No</th><th>Subject</th><th>Date</th><th></th><th></th></tr></thead>
+					<tfoot><tr><th></th><th>Reference No</th><th>Subject</th><th>Date</th><th></th><th></th></tr></tfoot>
+					<tbody></tbody>
+					</table>
+					
+				</div>	
+			</div>
+			</div>
+		</div>
+	   </div>	   
+	   <div id="details" style="display:none">
+			<form name="entryform" id="entryform">
+					<fieldset name="myfields" id="myfields" disabled>
+								<input type="hidden" name="iddcrform" class="iddcrform">
+								<input type="hidden" name="trans" class="trans">
+								<input type="hidden" name="tk" class="tk">
+							<div class="col-sm-12">
+								<label>To:</label>
+								<select name="to[]" class="simple-select2" style="width: 100%" multiple></select>
+								
+							</div>
+							<div class="form-group col-sm-12">
+								<label>Reference No.:</label>
+								<input type="text" class="form-control" name="referenceno" placeholder="CIO-20" >
+							</div>
+							<div class="form-group col-sm-12">
+								<label>Date Filed:</label>
+								<input type="date" class="form-control" name="datefiled" >
+							</div>
+							<div class="col-sm-12">
+								<label><input type="checkbox" name="urgent" value="Y">Urgent</label>
+							</div>
+							<div class="form-group col-sm-12">
+								<label>Subject:</label>
+								<input type="text" class="form-control" name="subject">
+							</div>
+							<div class="col-sm-12">
+								<label>Platform:</label><br>
+								<div class="col-sm-6">
+									<label><input type="checkbox" name="facebook" value="Y">Facebook</label><br>
+									<label><input type="checkbox" name="email" value="Y">E-mail</label>
+								</div>
+								<div class="col-sm-6">
+									<label><input type="checkbox" name="text" value="Y">Text Message</label><br>
+									<label><input type="checkbox" name="call" value="Y">Call</label>
+								</div>
+							</div>
+							<div  class="col-sm-12">
+								<label>Type of Report:</label><br>
+								<div class="col-sm-4">
+									<label><input type="checkbox"  name="complaint" value="Y">Complaint</label><br>
+									<label><input type="checkbox"  name="request" value="Y">Request</label><br>
+									<label><input type="checkbox"  name="suggestion" value="Y">Suggestion</label>
+								</div>
+								<div class="col-sm-4">
+									<label><input type="checkbox"  name="commendation" value="Y">Commendation/ Appreciation</label><br>
+									<label><input type="checkbox"  name="followup" value="Y">Follow-up</label><br>
+									<label><input type="checkbox"  name="inquiry" value="Y">Inquiry</label>
+								</div>
+								<div class="col-sm-4">
+									<label><input type="checkbox"  name="others" onclick="showodetails(this.form)" value="Y">Others</label>
+									<input type="text" class="form-control" name="odetails">
+								</div>
+							</div>
+							
+							<div class="form-group col-sm-12">
+								<label for="comment">Details:</label>
+								<textarea class="form-control" rows="5" name="details"></textarea>
+							</div>
+							<div class="form-group col-sm-12">
+								<label>Prepared by</label>
+								<input type="text" class="form-control" name="preparedby" placeholder="Enter fullname" >
+							</div>
+							<div class="form-group col-sm-12">
+								<label for="comment">Remarks:</label>
+								<textarea class="form-control" rows="5" name="remarks"></textarea>
+							</div>
+							<div class="form-group col-sm-12">
+								<label>Chief of Staff</label>
+								<input type="text" class="form-control" name="chiefofstaff" placeholder="Enter fullname" >
+							</div>
+							
+					</fieldset>
+					<div class="col-xs-12">
+						
+						<button name="butprint" type="button" onclick="printthis(this.form)" class="btn btn-primary" id="printbut">Print</a>	
+						
+					</div>	
+			</form>
+			<div class="col-xs-12" id="divattachment">
+						<div class="col-xs-12">
+							<h5>Attachment/s:</h5>
+							<button type="button" id="attachmentbutton" class="btn btn-default" onclick="addimages();return false;" id="addimage">Add Image (max image size is 3mb)</button>
+							<br><br>
+						</div>
+						<div class="col-xs-12">
+							<div id="divimages"></div>
+						</div>
+			</div>
+		</div>
+	  
+		
+		
+	   
+	</div>
+</div>
+<div id="header"></div>
+
+
+<div id="mySave" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      
+      <div class="modal-body">
+		  <img class="img-responsive center-block" alt="saving" src="images/saving.gif">
+		  <div class="col-xs-12" style="text-align:center"><span>Saving Please Wait</span></div>
+	  </div>
+      
+    </div>
+
+  </div>
+</div>
+
+
+<section><div id="attachmentdiv"></div></section>
+</body>
+<script src="main.js"></script>
+<script>
+var tupdate = false;
+
+function startload() {
+	//officecode
+	
+	var tk=qs['tk'];
+	var table = $('#ds').DataTable( {
+		"ajax": "receivedController.php?trans=getdetails&tk="+tk+"&officecode="+soffice,
+        "columns": [
+            {"className":      'details-control',
+												 "orderable":      false,
+												 "data":           null,
+												 "defaultContent": ''},
+			{ "data": "referenceno"},
+			{ "data": "subject"},
+			{ "data": "datefiled"},
+			{ "data": function (d) {return seen(d);} },
+			{ "data": function (d) {return actions(d);} }
+			
+        ],
+        "order": [[3, 'desc']]
+    } );
+	
+	
+	
+	$('#ds tbody').on('click', 'td.details-control', function () {
+		
+        var tr = $(this).closest('tr');
+        var row = table.row( tr );
+ 
+        if ( row.child.isShown() ) {
+            
+            //row.child.hide();
+            //tr.removeClass('shown');
+			$('#ds').DataTable().ajax.reload(null,false);
+			
+        }
+		
+        else {
+            if ( table.row( '.shown' ).length ) {
+                  //$('.details-control', table.row( '.shown' ).node()).click();
+				  $('.maindiv').hide();
+				  $( '.shown' ).removeClass('shown');
+			}
+            row.child( format(row.data())).show();
+            tr.addClass('shown');
+			getchild(row.data());
+			setseen(row.data());
+        }
+		
+    } );
+	
+	
+	$.get("encodedController.php",{trans:"offices","tk":tk},function(data){
+										var offices = data['table'];
+										document.getElementsByName('to[]')[0].length = 0;
+										offices.forEach(initselect);
+										initselect2();
+										},'json');
+	 
+	startattachment();
+	initload();
+}
+function actions(d){
+	var buttons ='';
+	var key = "'"+d['idtrackform']+"','"+d['iddcrform']+"'";
+	buttons ='<button type="button" onclick="pending('+key+')" data-toggle="tooltip" title="Pending" class="btn btn-link"><span class="glyphicon glyphicon-alert"></span></button> <button type="button" onclick="ongoing('+key+')" data-toggle="tooltip" title="Ongoing" class="btn btn-link"><span class="glyphicon glyphicon-transfer"></span></button> <button type="button" onclick="resolved('+key+')" data-toggle="tooltip" title="Resolved" class="btn btn-link"><span class="glyphicon glyphicon-check"></span></button>';
+	return buttons;
+}
+function seen(d){
+var data='';
+	if (d['seen']!=0){
+		data = "<span class='glyphicon glyphicon-eye-open'></span>";
+	} 
+	return data;
+}
+function initselect2(){
+
+$('.simple-select2').select2({
+												theme: "classic",
+												placeholder: "Offices",
+												allowClear: true
+											});
+}
+function initselect(item, index, arr){
+var sel = document.getElementsByName('to[]')[0];
+	sel.options[sel.options.length] = new Option(item['officename'],item['officecode']);
+
+}
+
+
+
+
+function format(row){
+var iddcrform = row['iddcrform'];
+var track = "track"+row['idcasedoc'];
+
+var elem = document.getElementById(iddcrform);
+if (elem){
+  elem.parentNode.removeChild(iddcrform);
+}
+var elem2 = document.getElementById(track);
+if (elem2){
+  elem2.parentNode.removeChild(track);
+}
+  return '<div class="maindiv"><div class="col-xs-12 well" id="'+iddcrform+'"></div><div class="col-xs-12 well" id="'+track+'"></div></div>';
+}
+function getchild(data){
+var iddcrform = '#'+data['iddcrform'];
+//document.getElementsByName('myfields')[0].disabled = true;
+//var nform = $('#entryform').clone(true);
+$('.simple-select2').select2('destroy');
+var tform = document.getElementById('form'+data['iddcrform']);
+if (tform){
+	tform.parentNode.removeChild('form'+data['iddcrform']);
+}
+var nform = $('#entryform').clone(true).prop('id','form'+data['iddcrform']);
+nform.appendTo( iddcrform );
+initselect2();
+var x = document.getElementById('form'+data['iddcrform']);
+var sltor = iddcrform+' select';
+	
+	x.elements.namedItem('tk').value=qs['tk'];
+	x.elements.namedItem('trans').value='UPDATE';
+	x.elements.namedItem('iddcrform').value=data['iddcrform'];
+	var sto = data['to'];
+	var xto = sto.split(";");
+	//$('.simple-select2').val([""]);
+	$(sltor).val(sto.split(";")).trigger("change");
+	
+	x.elements.namedItem('subject').value= data['subject'];
+	x.elements.namedItem('referenceno').value= data['referenceno'];
+	x.elements.namedItem('odetails').value= data['odetails'];
+	x.elements.namedItem('details').value= data['details'];
+	x.elements.namedItem('preparedby').value= data['preparedby'];
+	x.elements.namedItem('remarks').value= data['remarks'];
+	x.elements.namedItem('datefiled').value= data['datefiled'];
+	if (data['urgent']=='Y'){
+		x.elements.namedItem('urgent').checked = true;
+	} else {
+		x.elements.namedItem('urgent').checked = false;
+	}
+	if (data['facebook']=='Y'){
+		x.elements.namedItem('facebook').checked = true;
+	} else {
+		x.elements.namedItem('facebook').checked = false;
+	}
+	if (data['email']=='Y'){
+		x.elements.namedItem('email').checked = true;
+	} else {
+		x.elements.namedItem('email').checked = false;
+	}
+	if (data['text']=='Y'){
+		x.elements.namedItem('text').checked = true;
+	} else {
+		x.elements.namedItem('text').checked = false;
+	}
+	if (data['call']=='Y'){
+		x.elements.namedItem('call').checked = true;
+	} else {
+		x.elements.namedItem('call').checked = false;
+	}
+	if (data['complaint']=='Y'){
+		x.elements.namedItem('complaint').checked = true;
+	} else {
+		x.elements.namedItem('complaint').checked = false;
+	}
+	if (data['request']=='Y'){
+		x.elements.namedItem('request').checked = true;
+	} else {
+		x.elements.namedItem('request').checked = false;
+	}
+	if (data['suggestion']=='Y'){
+		x.elements.namedItem('suggestion').checked = true;
+	} else {
+		x.elements.namedItem('suggestion').checked = false;
+	}
+	if (data['commendation']=='Y'){
+		x.elements.namedItem('commendation').checked = true;
+	} else {
+		x.elements.namedItem('commendation').checked = false;
+	}
+	if (data['followup']=='Y'){
+		x.elements.namedItem('followup').checked = true;
+	} else {
+		x.elements.namedItem('followup').checked = false;
+	}
+	if (data['inquiry']=='Y'){
+		x.elements.namedItem('inquiry').checked = true;
+	} else {
+		x.elements.namedItem('inquiry').checked = false;
+	}
+	if (data['others']=='Y'){
+		x.elements.namedItem('others').checked = true;
+		x.elements.namedItem('odetails').style.display="block";
+	} else {
+		x.elements.namedItem('odetails').style.display="none";
+		x.elements.namedItem('others').checked = false;
+	}
+	x.elements.namedItem('chiefofstaff').value= data['chiefofstaff'];
+	x.elements.namedItem('myfields').disabled = true;
+	
+	
+	
+	
+    $('.simple-select2').select2('enable',false);
+	var nform = $('#divattachment').clone(true);
+	nform.appendTo( iddcrform );
+	document.getElementById('divattachment').style.display = "block";
+	document.getElementById('keyvalue').value = data['iddcrform'];
+	document.getElementById('keyname').value = 'iddcrform';
+	getattachments(data['iddcrform'],true);
+	initload();
+	getcase(data['idcasedoc']);
+}
+
+function closethis(thisform){
+document.getElementById('details').style.display="none";
+if (tupdate) {
+	
+	tupdate = false;
+}
+document.getElementById('list').style.display="block";
+}
+function printthis(thisform){
+		thisform.elements.namedItem('myfields').disabled = false;
+		var data = $(thisform).serialize();
+        var xto = thisform.elements.namedItem('to[]');
+        var xtol = xto.length;
+        var office = '';
+        for(i=0; i < xto.length; i++){
+        	if(xto[i].selected){
+        		//alert('value: '+ xto[i].value +' label ' + xto[i].text);
+        		office += 'offcode[] ='+ xto[i].value +' &officename[] =' +xto[i].text+ '&';
+        	}
+        }
+       
+		data +='&'+encodeURI(office);
+		
+		window.open('printController.php?'+ data);
+		thisform.elements.namedItem('myfields').disabled = true;
+
+}
+function getcase(idcasedoc){
+var tk=qs['tk'];
+$.get("receivedController.php",{trans:"getcase","tk":tk,"idcasedoc":idcasedoc},function(data){
+										var nlast = data['trackform'].length-1;
+										
+										var bfound = false;
+										var scontent ='';
+										var idcasedoc =0;
+										var nlength = data['trackform'].length
+										
+										for(i=0; i < nlength; i++){
+										
+											var row = data['trackform'][i];
+											bfound = true;
+											if (nlast == i){
+												scontent +="<div class='shadow-sm p-3 mb-5 bg-white rounded'>";
+												scontent += "<form>";
+												scontent += '<input type="hidden" name="idtrackform" value="'+row['idtrackform']+'">';
+												scontent += '<input type="hidden" name="trans" value="savedetails">';
+												scontent += '<input type="hidden" name="tk" value="'+qs['tk']+'">';
+												scontent += "<label><small>Status:</small> "+row['status']+"  <small>Date Received:</small> "+row['startdate']+"  </label><br>";
+												scontent += '<div class="form-group">';
+												scontent += "<label>Details :</label>";
+												var sdetails = row['details'];
+												if (!sdetails) {sdetails ='';}
+												scontent += '<input type="text" class="form-control" name="details" value ="'+sdetails+'">';
+												scontent += "</div>";
+												
+												idcasedoc = row['idcasedoc'];
+												scontent += '<div class="col-md-1"><button type="button" onclick="savedetails(this.form)" class="btn btn-primary">Save</a></div>';
+												var key = "'"+row['idtrackform']+"','"+row['iddcrform']+"'";
+												
+												scontent += '<div class="col-md-11"><span class="pull-right"><button type="button" onclick="pending('+key+')" data-toggle="tooltip" title="Pending" class="btn btn-link"><span class="glyphicon glyphicon-alert"></span></button>';
+												scontent += '<button type="button" onclick="ongoing('+key+')" data-toggle="tooltip" title="Ongoing" class="btn btn-link"><span class="glyphicon glyphicon-transfer"></span></button>';
+												scontent += '<button type="button" onclick="resolved('+key+')" data-toggle="tooltip" title="Resolved" class="btn btn-link"><span class="glyphicon glyphicon-check"></span></button>';
+												scontent += "</span></div></form></div>";
+											}
+											
+										}
+										if (bfound){
+												
+												document.getElementById('track'+idcasedoc).innerHTML = scontent;
+											}
+										},'json');
+}
+function savedetails(thisform){
+var data = $(thisform).serialize();
+$.get("receivedController.php",data,function(data){
+											$.toaster({ priority : 'success', title : 'Received', message : 'Record Updated'});
+									        //$('#ds').DataTable().ajax.reload(null,false);
+										},'json');
+}
+function setseen(d){
+	$.get("receivedController.php",{"trans":"seen","idtrackform":d['idtrackform'],"tk":qs['tk']});
+}
+</script>
+<script src="attachment.js"></script>

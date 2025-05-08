@@ -1,0 +1,118 @@
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="referrer" content="origin">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<link rel="stylesheet" href="main.css">
+<link rel="stylesheet" href="ol.css">
+<style>
+	#map {height: 100%; width:100%;}
+</style>
+
+</head>
+<body>
+<div class="container">
+	<div id="header1"></div>
+	<div id="content">
+		
+	   <div class="paper paper-polar" >
+	   <div class="row">
+			<h4 class="text-center">Appointment Schedules</h4></div>	
+	   </div>
+	   <div id="list">
+	     
+	   
+		<div class="row">
+			<div class="paper paper-polar" >
+			<div class="row">
+			<div class="col-xs-12">
+					<h3>List of Appoinment Schedules</h3>
+					<h4 id="officename"></h4>
+					<table class="table table-hover" id="ds" style="width:100%">
+					<thead><tr><th>Date</th><th>Name</th><th>DateApplied</th><th>Remarks</th><th>Details</th></tr></thead>
+					<tbody></tbody>
+					</table>
+					
+				</div>	
+			</div>
+			</div>
+		</div>
+		
+	   </div>	   
+	   
+	  
+		
+		
+	   
+	</div>
+</div>
+<div id="header"></div>
+
+
+
+
+</body>
+<script src="jquery.min.js"></script>
+<script src="bootstrap.min.js"></script>
+<script src="jquery.dataTables.min.js"></script>
+<script src="Buttons/js/buttons.print.min.js"></script>
+<script src="jquery.toaster.js"></script>
+<script src="bootbox.min.js"></script>
+<script src="ol.js"></script>
+<script src="main1.js"></script>
+<script>
+var tupdate = false;
+
+
+function startload() {
+	var caption = "DAR Region XI";
+	var today = new Date();
+	var asDate = new Date();
+	var options = { year: 'numeric', month: 'long', day: 'numeric' };
+	var stoday = today.toLocaleDateString("en-US", options);
+	var tk=qs['tk'];
+	
+	var table = $('#ds').DataTable( {
+		"ajax": "listappointmentsController.php?trans=getdetails&tk="+tk+"&officecode="+soffice,
+		"dom": 'lfrtBip', 
+		"buttons": [
+            "copy", 
+			{extend:"excelHtml5","title" : "List of Appointment Schedules", "messageTop": caption, "messageBottom": "\n Prepared by: "+ fullname + " " +stoday, "footer":true}, 
+			{extend: 'pdf', 
+			title : 'List of Appointment Schedules'
+			, messageTop: caption, messageBottom: '\n Prepared by: '+ fullname + ' ' +stoday, footer:true},
+			{extend: 'print',
+			title : 'List of Appointment Schedules',
+			 messageTop: caption, messageBottom: '\n Prepared by: '+ fullname + ' ' +stoday, footer:true
+			
+			}
+        ],
+        "columns": [
+            
+			{ "data": function(d){return tolocal(d);}},
+			{ "data": "fullname"},
+			{ "data": "dateapplied"},
+			{ "data": "appremarks"},
+			{ "data": function(d){return getdetails(d);}}],
+        "order": [[0, 'asc']]
+    } );
+	$('#ds tbody').off();
+	
+	initload();
+
+}
+function tolocal(d){
+	let xdate = new Date(d['scheduledate']);
+	return xdate.toLocaleString();
+}
+function getdetails(d){
+	if (d['ridappointment']){
+		return '<a href="https://darxi.net/verifyappointment.php?idappointment='+d['ridappointment']+'" target="_blank"><span class="glyphicon glyphicon-file"></span></a>';
+	} else {
+		return "";
+	}
+}
+
+</script>

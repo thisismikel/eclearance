@@ -1,0 +1,166 @@
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="referrer" content="origin">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<link rel="stylesheet" href="main.css">
+<link rel="stylesheet" href="ol.css">
+
+
+</head>
+<body>
+<div class="container">
+	<div id="header1"></div>
+	<div id="ckeditor" class="row">
+				
+				<form action="renderpdfController.php" method="post" id="renderform" target="pdfwindow" >
+							<input type="hidden" name="lsave" id="lsave" value="0">
+							<input type="hidden" name="iddcrform" id="iddcrform" value="idtest">
+							<textarea name="ckcontent" id="editor">
+          
+							</textarea>
+						
+				</form>		
+		
+				<div class="row">
+					<div class="col-xs-12">
+						<br>
+							<button type="button" class="btn btn-primary" onclick="renderthis()">Preview</button>
+							<button type="button" class="btn btn-success" onclick="savethis()">Save</button>
+					</div>
+		
+					<div class="col-xs-12">
+						<br>
+						<div class="alert alert-danger alert-dismissible" role="alert">
+							<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+							<strong>Please the enable pop up window</strong>
+						</div>
+					</div>
+				</div>
+	</div>
+</body>
+<script src="jquery.min.js"></script>
+<script src="bootstrap.min.js"></script>
+<script src="jquery.dataTables.min.js"></script>
+<script src="Buttons/js/buttons.print.min.js"></script>
+<script src="jquery.toaster.js"></script>
+<script src="bootbox.min.js"></script>
+<script src="ol.js"></script>
+<script src="ckeditor/build/ckeditor.js"></script>
+
+<script>
+ClassicEditor
+			.create( document.querySelector( '#editor' ), {
+				
+				toolbar: {
+					items: [
+						'heading',
+						'|',
+						'bold',
+						'italic',
+						'link',
+						'bulletedList',
+						'numberedList',
+						'|',
+						'outdent',
+						'indent',
+						'|',
+						'imageUpload',
+						'blockQuote',
+						'insertTable',
+						'mediaEmbed',
+						'undo',
+						'redo',
+						'CKFinder',
+						'alignment',
+						'fontBackgroundColor',
+						'fontColor',
+						'fontSize',
+						'fontFamily',
+						'highlight',
+						'horizontalLine',
+						'pageBreak',
+						'removeFormat',
+						'specialCharacters',
+						'strikethrough',
+						'subscript',
+						'superscript',
+						'underline'
+					]
+				},
+				language: 'en',
+				image: {
+					toolbar: [
+						'imageTextAlternative',
+						'imageStyle:full',
+						'imageStyle:side'
+					]
+				},
+				table: {
+					contentToolbar: [
+						'tableColumn',
+						'tableRow',
+						'mergeTableCells',
+						'tableCellProperties',
+						'tableProperties'
+					]
+				},
+				licenseKey: '',
+				ckfinder: {openerMethod: 'popup'}
+				
+			} )
+			.then( editor => {
+				window.editor = editor;
+		
+				
+				
+				
+		
+				
+				
+				
+			} )
+			.catch( error => {
+				console.error( error );
+			} );
+function renderthis(){
+let params = 'menubar=no,width=0, height=0`,location=no, status=no, toolbar=no';
+	document.getElementById('lsave').value = "0";
+	window.open('','pdfwindow',params);
+	document.getElementById("renderform").submit();
+
+}
+function savethis(){
+    document.getElementById('lsave').value = "1";
+	document.getElementById("renderform").submit();
+	var someform = document.getElementById('renderform');
+		var data = new FormData(someform);
+		$.ajax({
+            url: 'renderpdfController.php',
+			data: data,
+			cache: false,
+			contentType: false,
+			processData: false,
+			dataType: 'json',
+			type: 'POST',
+            success: function(data) {
+				    $.toaster({ priority : 'success', title : 'Create Document', message : 'Document Saved'});
+				
+			}
+		});
+
+}
+</script>
+
+
+
+
+
+
+
+
+
+       
+    

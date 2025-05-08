@@ -1,0 +1,91 @@
+<div id="myImage" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" onclick="hidemyImage()">&times;</button>
+        <h6 class="modal-title">Attachment</h6>
+      </div>
+      <div class="modal-body">
+		<form enctype="multipart/form-data" id="inputForm" method="POST" action="attachmentController.php">
+            <input type="hidden" name="keyvalue" id="keyvalue">
+			<input type="hidden" name="keyname" id="keyname">
+			<input type="hidden" name="trans2" id="trans2" value="attachment">
+			<input type="hidden" name="label" id="label">
+			<input type="hidden" name="tk" class="tk">
+            <button type="button" class="btn btn-primary" onclick="checkfilesize()">Save Attachment</button>
+			<br><br>
+            <div id="fileupload[0]" >
+                <img src="attachments/document_image.jpg" class="img-responsive" id="imgupload" >
+				<br>
+                <input type="file" class="file" name="imagefile" id="imagefile" accept="image/jpeg, image/png, application/pdf" onchange="readURL(this,'#imgupload');">   
+            </div> 
+			<br>
+			<button type="button" onclick="checkfilesize()" class="btn btn-primary">Save Files</button>
+			
+        </form>
+		</div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" onclick="hidemyImage()">Close</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<div id="myImage1" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" onclick="hidemyImage()">&times;</button>
+        <h6 class="modal-title">Attachment</h6>
+      </div>
+      <div class="modal-body">
+		<form enctype="multipart/form-data" id="inputForm1" method="POST" action="attachmentController.php">
+            <input type="hidden" name="keyvalue" id="keyvalue1">
+			<input type="hidden" name="keyname" id="keyname1">
+			<input type="hidden" name="trans2" value="attachment">
+			<input type="hidden" name="label" id="label1">
+			<input type="hidden" name="tk" class="tk">
+            <button type="button" class="btn btn-primary" onclick="checkfilesize1()">Save Attachment</button>
+			<br><br>
+            <div id="fileupload[0]" >
+                <img src="attachments/document_image.jpg" class="img-responsive" id="imgupload1" >
+				<br>
+                <input type="file" class="file" name="imagefile" id="imagefile1" accept="image/jpeg, image/png, application/pdf" onchange="readURL(this,'#imgupload1');">   
+            </div> 
+			<br>
+			<button type="button" onclick="checkfilesize1()" class="btn btn-primary">Save Files</button>
+        </form>
+		</div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" onclick="hidemyImage1()">Close</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<div id="myShowImage" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" onclick="hidemyShowImage()">&times;</button>
+        <h5 class="modal-title">Attachment</h5>
+      </div>
+      <div class="modal-body">
+		  <img class="img-responsive" alt="attachment" id="imgmodal">
+	  </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" onclick="hidemyShowImage()">Close</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
