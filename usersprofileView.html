@@ -1,0 +1,535 @@
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="main.css">
+
+</head>
+<body>
+<div class="container">
+	<div id="header1"></div>
+	<div id="content">
+		
+	   <div class="paper paper-polar" >
+	   <div class="row">
+			<h4 class="text-center">User Profile</h4></div>	
+	   </div>
+	   
+		<div id="details">
+			<form name="entryform" id="entryform" enctype="multipart/form-data">
+					
+								<input type="hidden" name="userid" id="userid">
+								<input type="hidden" name="trans" id="trans">
+								<input type="hidden" name="image1" id="image1">
+								<input type="hidden" name="sig1" id="sig1">
+								<input type="hidden" name="tk">
+								<div class="col-md-6 col-sm-12">
+									<img src="userimages/person.jpg" class="img-responsive" id="imgupload" name="imgupload" style="max-width:20%;" >
+									<br>
+									<input type="file" class="file" name="imagefile" id="imagefile" accept="image/jpeg, image/png" onchange="readURL(this,'#imgupload');">
+								</div>	
+								<div class="col-md-6 col-sm-12">
+									<img src="signatures/signature.png" class="img-responsive" id="sigupload" name="imgupload" style="max-width:30%;" >
+									<br>
+									<input type="file" class="file" name="sigfile" id="sigfile" accept="image/png, image/jpg" onchange="readURL(this,'#sigupload');">
+									<br><label>Height:150px Width:300px</label>
+								</div>
+								<div class="col-xs-12"><div class="form-group">
+								<label for="email">Email</label>
+								<input type="email" class="form-control" id="emailaddress" name="emailaddress" >
+							</div>
+							<div class="form-group">
+								<label for="password">Password</label>
+								<input type="password" class="form-control" id="password" name="password" >
+							</div>
+							<div class="form-group">
+								<label for="password2">Confirm Password</label>
+								<input type="password" class="form-control" id="password2" name="password2" >
+							</div>
+							<div class="form-group">
+								<label for="fullname">Fullname</label>
+								<input type="text" class="form-control" id="fullname" name="fullname" required="true"  placeholder="Complete Name">
+							</div>
+							<div class="form-group">
+								<label for="role">Role</label>
+								<input type="text" class="form-control" id="role" name="role" required="true"  placeholder="Role">
+							</div>
+							<div class="form-group">
+								<label for="sel1">Office</label>
+								<select class="form-control" id="office" name="office">
+									
+								</select>
+							</div>
+							<div class="form-group">
+								<label for="cellno">Cellno</label>
+								<input type="text" class="form-control" id="cellno" name="cellno" required="true"  placeholder="09123456789">
+							</div>
+							<div class="form-group">
+								<label>Address</label>
+								<input type="text" class="form-control" id="address" name="address" placeholder="Residential Address">
+							</div>
+							<div class="form-group">
+								<label for="remarks">Remarks</label>
+								<input type="text" class="form-control" id="remarks" name="remarks"  placeholder="Remarks">
+							</div>
+							<div class="form-group">
+								<label>Active</label>
+								<select class="form-control" name="active" id="active">
+									<option value='Y'>Yes</option>
+									<option value='N'>No</option>
+								</select>
+							</div>
+							<div class="form-group">
+								<label for="login">Log-In Date</label>
+								<input type="text" class="form-control" id="login" name="login"  disabled>
+							</div>
+							<div class="form-group">
+								<label for="login">IP Address</label>
+								<input type="text" class="form-control" id="ip" name="ip"  disabled>
+							</div>
+							
+					
+					<div class="col-xs-11">
+						<button name="butsave" type="button" onclick="savethis(this.form)" class="btn btn-primary" id="savebut">Save</button>
+						<button name="butcancel" type="button" onclick="cancelthis(this.form)" class="btn btn-default" id="cancelbut">Cancel</button>	
+						
+						
+					</div>	
+					<div class="col-xs-1">
+						<button name="butdevice" type="button" onclick="devicethis(this.form)" class="btn btn-warning" id="devicebut"><span class="glyphicon glyphicon-tags"></span> Register Device</button>
+					</div>
+					
+				</form>	
+		</div>	   
+	   
+	  
+		
+		
+	   
+	</div>
+</div>
+<div id="header"></div>
+
+<div id="mySave" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      
+      <div class="modal-body">
+		  <img class="img-responsive center-block" alt="saving" src="images/saving.gif">
+		  <div class="col-xs-12" style="text-align:center"><span>Saving Please Wait</span></div>
+	  </div>
+      
+    </div>
+
+  </div>
+</div>
+
+<div id="devModal" class="modal" role="dialog">
+  <div class="modal-dialog modal-lg" role="document">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h5 class="modal-title"><span id="modaltitle">Registed Devices</span></h4>
+      </div>
+      <div class="modal-body">
+		<div class="row"><div class="col-xs-12">
+			<table class="table table-hover" id="ds" style="width:100%">
+					<thead><tr><th>Device Description</th><th>Details</th><th></th></tr></thead>
+					
+					<tbody></tbody>
+			</table>
+		</div></div>
+		<div class="col-xs-12"><button type="button" class="btn btn-primary" onclick="adddev()"><span class="glyphicon glyphicon-plus"></span> New Device</div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+</div>
+
+<div id="getdevModal" class="modal" role="dialog">
+  <div class="modal-dialog" role="document">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+		<div class="modal-header">
+			<button type="button" class="close" data-dismiss="modal">&times;</button>
+			<h5 class="modal-title"><span>Device Info</span></h4>
+		</div>
+		<div class="modal-body">
+			<div class="row"><div class="col-xs-12">
+				<form>
+					<input type="hidden" name="latitude" id="latitude">
+					<input type="hidden" name="longitude" id="longitude">
+					<input type="hidden" name="trans" value ="getCreateArgs">
+					<input type="hidden" name="tk">
+					<input type="hidden" name="tkform">
+					<div class="form-group">
+								<label>Date of Registration</label>
+								<input type="date" class="form-control" id="datereg" name="datereg" readonly>
+					</div>
+					<div class="form-group">
+								<label>Device Description</label>
+								<input type="text" class="form-control" id="clientdesc" name="clientdesc" >
+					</div>
+					<div class="form-group">
+								<label>Device Details</label>
+								<input type="text" class="form-control" id="devdesc" name="devdesc" readonly>
+					</div>
+					<button type="button" onclick="savedev(this)" class="btn btn-primary"><span class="glyphicon glyphicon-floppy-save"></span> Save</button>
+				</form>
+			</div></div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+			</div>
+		</div>
+
+	</div>
+  </div>
+</div>
+<div id="myVerify" class="modal">
+  <div class="modal-dialog modal-sm">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      
+      <div class="modal-body">
+		  <img class="img-responsive center-block" alt="saving" src="images/saving.gif">
+		  <div class="col-xs-12" style="text-align:center"><span>Verifying Please Wait</span></div>
+	  </div>
+      
+    </div>
+
+  </div>
+</div>
+</body>
+<script src="jquery.min.js"></script>
+<script src="bootstrap.min.js"></script>
+<script src="jquery.dataTables.min.js"></script>
+<script src="Buttons/js/buttons.print.min.js"></script>
+<script src="jquery.toaster.js"></script>
+<script src="bootbox.min.js"></script>
+<script src="select2.min.js"></script>
+<script src="Chart.bundle.min.js"></script>
+<script src="main1.js"></script>
+<script>
+var tupdate = 0;
+function readURL(input, id) {
+  if (input.files && input.files[0]) {
+    var reader = new FileReader();
+    reader.onload = function (e) {
+	  var sfilename = input.value;
+	  var ext = sfilename.substr(sfilename.lastIndexOf('.') + 1);
+	  if (ext == 'pdf'){$(id).attr('src', 'attachments/pdficon.jpg');} else {
+      $(id)
+        .attr('src', e.target.result);}
+        
+    };
+	
+    reader.readAsDataURL(input.files[0]);
+  }
+}
+
+function startload() {
+	//document.getElementById('details').style.display = "block";
+	
+	
+	
+	$.get("usersController.php",{trans:"getoffices",tk:qs['tk']}, function(data){
+		var x = document.getElementById('entryform');
+		var gl = x.elements.namedItem('office');
+		var row = data['data'];
+		gl.innerHTML = "";
+		for (a = 0;a < row.length; a++){
+			var option = document.createElement("option");
+							option.text = row[a]['officename'];
+							option.value = row[a]['officecode'];
+							gl.add(option); 
+		}
+		getprofile();
+		
+	},"json");
+		initload();
+}
+function getprofile(){
+	$.get("usersController.php",{trans:"getprofile","tk":qs['tk']},function (data) {getchild(data);},'json');
+
+}
+
+
+function getchild(user){
+var data = user['user'];
+var x = document.getElementById('entryform');
+//var x = document.getElementById(userid);
+
+	
+	x.elements.namedItem('tk').value=qs['tk'];
+	x.elements.namedItem('trans').value='UPDATE';
+	x.elements.namedItem('userid').value=data['userid'];
+	x.elements.namedItem('fullname').value=data['fullname'];
+	x.elements.namedItem('active').value=data['active'];
+	x.elements.namedItem('role').value=data['role'];
+	x.elements.namedItem('office').value=data['office'];
+	x.elements.namedItem('login').value=data['login'];
+	x.elements.namedItem('ip').value=data['ip'];
+	x.elements.namedItem('cellno').value=data['cellno'];
+	x.elements.namedItem('emailaddress').value=data['emailaddress'];
+	x.elements.namedItem('remarks').value=data['remarks'];
+	x.elements.namedItem('address').value=data['address'];
+	if (data['image']){
+		document.getElementById('imgupload').src="userimages/"+data['image'];
+		x.elements.namedItem('image1').value="userimages/"+data['image'];
+	} else {
+		document.getElementById('imgupload').src="userimages/person.jpg";
+		x.elements.namedItem('image1').value="";
+	}
+	if (data['signature']){
+		document.getElementById('sigupload').src="signatures/"+data['signature'];
+		x.elements.namedItem('sig1').value="signatures/"+data['signature'];
+	} else {
+		document.getElementById('sigupload').src="signatures/signature.png";
+		x.elements.namedItem('sig1').value="";
+	}
+	
+}
+
+
+
+function savethis(thisform){
+var cont = 1;
+
+	
+	
+	var xdetails = thisform.elements.namedItem('fullname').value;
+	var pass = thisform.elements.namedItem('password').value;
+	var pass2 = thisform.elements.namedItem('password2').value;
+	
+		
+		
+		
+		if (!xdetails) { $.toaster({ priority : 'danger', title : 'User', message : 'Invalid Fullname Field'}); cont = -1;} 
+		if (pass !=pass2) { $.toaster({ priority : 'danger', title : 'User', message : 'Invalid password Field'}); cont = -1;} 
+	
+	
+	if (cont > -1){
+		
+		var data = new FormData(thisform);
+		//var data = $(thisform).serialize();
+		
+		$.ajax({
+            url: 'usersController.php',
+			data: data,
+			cache: false,
+			contentType: false,
+			processData: false,
+			dataType: 'json',
+			type: 'POST',
+            success: function(data) {
+			
+				    
+							
+						
+						$.toaster({ priority : 'success', title : 'Users', message : 'Record Saved'});
+						tupdate = true;
+						document.getElementById('userid').value = data['userid'];
+						document.getElementById('trans').value = 'UPDATE';
+						document.getElementById('image1').value = 'userimages/'+data['image'];
+					
+					
+					
+			}
+		});
+		
+		
+		
+	}
+	return true;
+}
+
+function cancelthis(thisform){
+	startload();
+	
+}
+function devicethis(data){
+var userid = data['userid'];
+var tk=qs['tk'];
+	
+	var table = $('#ds').DataTable( {
+		"ajax": "webauthnController.php?trans=getdevs&tk="+tk, "destroy":true,
+		
+        "columns": [
+            
+			{ "data": "clientdesc"},
+			{ "data": "devdesc"},
+			{"className":'delbutton',"defaultContent": '<button type="button" data-toggle="tooltip" title="remove" class="btn btn-link" ><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></button>'}	
+
+        ], "searching":false,
+    } );
+	$('#ds tbody').off( 'click');
+	$('#ds tbody').on( 'click', 'td.delbutton', function (o) {
+        var tr = $(this).closest('tr');
+        var row = table.row( tr );
+		deletethis(row.data());
+	} );
+	$("#devModal").modal("show");
+}
+function deletethis(data){
+let tk=qs['tk'];
+//gentkform(tk);
+bootbox.confirm({
+    message: 'Delete this Device '+ data['clientdesc'] +'?',
+    buttons: {
+        confirm: {
+            label: 'Yes',
+            className: 'btn-danger'
+        },
+        cancel: {
+            label: 'No',
+            className: 'btn-default'
+        }
+    },
+    callback: function (result) {
+        if (result){
+			var tk=qs['tk'];
+			$.get("webauthnController.php",{trans:"delete",idwebauthn:data['idwebauthn'],"tk":tk},function(data){
+										
+											bootbox.alert('Device deleted');
+									        $('#ds').DataTable().ajax.reload(null,false);
+											
+							        },'json');
+					
+
+		}
+    }
+});
+	return false;
+}
+function adddev(){
+let udata = navigator.userAgentData;
+let xdevice = "Desktop";
+$("#myVerify").modal("show");
+		if (udata.mobile) { xdevice = "Mobile";}
+		
+
+            if (!window.fetch || !navigator.credentials || !navigator.credentials.create) {
+				$("#myVerify").modal("hide");
+                bootbox.alert('Your device cannot support this operation.');
+				return;
+            } else {
+				if(navigator.geolocation) {
+					navigator.geolocation.getCurrentPosition(successCallback, errorCallback);
+            
+				} else {
+					$("#myVerify").modal("hide");
+					 bootbox.alert('Your device cannot supported this operation. - get current location');
+				}
+				
+				
+				
+			}
+			
+			
+			
+}
+function successCallback(position) {
+		var tk=qs['tk'];
+		document.getElementById('latitude').value = position.coords.latitude;
+		document.getElementById('longitude').value = position.coords.longitude;
+		let udata = navigator.userAgentData;
+		let xdevice = "Desktop";
+			if (udata.mobile) { xdevice = "Mobile";}
+			let devdesc = "Device: "+ xdevice+" OS: "+ udata.platform;
+			document.getElementById('devdesc').value = devdesc;
+			document.getElementById('datereg').value = configuredate();
+			gentkform(tk);
+			$("#myVerify").modal("hide");
+			$("#getdevModal").modal("show");
+		
+}
+function errorCallback(error) {
+		$("#myVerify").modal("hide");
+        bootbox.alert('Your device cannot support this operation. - please allow this application to trace your location');
+    }
+function savedev(e){
+var cont = 1;
+var tk=qs['tk'];
+let idwebauthn;
+	let thisform = e.form;
+	var xdetails = thisform.elements.namedItem('clientdesc').value;
+	thisform.elements.namedItem('tk').value = tk;
+			
+		if (!xdetails) { bootbox.alert('Invalid Device Name'); cont = -1;} 
+		
+	
+	if (cont > -1){
+		
+		//let data = new FormData(thisform);
+		//var data = "tk=42";
+		//console.log(JSON.stringify(data));
+		let data = $(thisform).serialize();
+		$("#myVerify").modal("show");
+		window.fetch('webauthnController.php?'+data, {
+			method: 'GET', // *GET, POST, PUT, DELETE, etc.
+			cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
+			}
+		).then(function(response) {
+                return response.json();
+
+                
+				}).then(function(json) {
+
+                
+					if (json.success === false) {
+						$("#myVerify").modal("hide");
+						throw new Error(json.msg);
+					}
+	
+					json.publicKey.user.id = Uint8Array.from( json.publicKey.user.id, c => c.charCodeAt(0)),
+					json.publicKey.challenge = Uint8Array.from(json.publicKey.challenge, c => c.charCodeAt(0));
+
+					if (json.publicKey.excludeCredentials) {
+						for (let cred of json.publicKey.excludeCredentials) {
+							cred.id = Uint8Array.from(cred.id, c => c.charCodeAt(0));
+						}
+					}
+					idwebauthn = json.idwebauthn;
+					return json;
+
+				}).then(function(options){
+					$("#getdevModal").modal("hide");
+					return navigator.credentials.create(options);
+				}).then(function(cred) {
+					let clientDataJSON = arrayBufferToBase64(cred.response.clientDataJSON);
+					//var clientDataStr = arrayBufferToStr(cred.response.clientDataJSON);
+					//var clientDataObj = JSON.parse(clientDataStr);
+					//console.log(clientDataObj.type);      // "webauthn.create" or "webauthn.get"
+					//console.log(clientDataObj.challenge); // base64 encoded String containing the original challenge
+					//onsole.log(clientDataObj.origin);
+					$.get('webauthnController.php',{"idwebauthn":idwebauthn,"webauthnid":cred.response.rawId,"clientDataJSON":clientDataJSON,trans:"savedev","tk":qs['tk']},function (data){
+						$("#myVerify").modal("hide");
+						
+						$('#ds').DataTable().ajax.reload(null,false);
+						
+						bootbox.alert('Device Registration completed');
+					},'json');
+					
+					
+				});
+
+				
+				
+				
+				
+				
+		
+	}
+	return true;
+}
+
+</script>

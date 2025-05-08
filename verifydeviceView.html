@@ -1,0 +1,162 @@
+<head>
+<title>DAR Region XI</title>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="referrer" content="origin">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<link rel="apple-touch-icon" sizes="57x57" href="images/icon/apple-icon-57x57.png">
+<link rel="apple-touch-icon" sizes="60x60" href="images/icon/apple-icon-60x60.png">
+<link rel="apple-touch-icon" sizes="72x72" href="images/icon/apple-icon-72x72.png">
+<link rel="apple-touch-icon" sizes="76x76" href="images/icon/apple-icon-76x76.png">
+<link rel="apple-touch-icon" sizes="114x114" href="images/icon/apple-icon-114x114.png">
+<link rel="apple-touch-icon" sizes="120x120" href="images/icon/apple-icon-120x120.png">
+<link rel="apple-touch-icon" sizes="144x144" href="images/icon/apple-icon-144x144.png">
+<link rel="apple-touch-icon" sizes="152x152" href="images/icon/apple-icon-152x152.png">
+<link rel="apple-touch-icon" sizes="180x180" href="images/icon/apple-icon-180x180.png">
+<link rel="icon" type="image/png" sizes="192x192"  href="images/icon/android-icon-192x192.png">
+<link rel="icon" type="image/png" sizes="32x32" href="images/icon/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="96x96" href="images/icon/favicon-96x96.png">
+<link rel="manifest" href="manifest.json">
+<meta name="msapplication-TileColor" content="#ffffff">
+<meta name="msapplication-TileImage" content="images/icon/ms-icon-144x144.png">
+<meta name="theme-color" content="#ffffff">
+<link rel="stylesheet" href="main.css">
+
+</head>
+<body>
+<div class="container">
+	<div id="header1"></div>
+	<div id="content">
+		
+	   <div class="paper paper-polar" >
+	   <div class="row">
+			<h4 class="text-center">Verify Device Registration - <span id="sofficeA"></span></h4></div>	
+	   </div>
+	    <div id="details">
+		</div>
+	  
+		
+		
+	   
+	</div>
+</div>
+<div id="header"></div>
+<div id="mySave" class="modal">
+  <div class="modal-dialog modal-sm">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      
+      <div class="modal-body">
+		  <img class="img-responsive center-block" alt="saving" src="images/saving.gif">
+		  <div class="col-xs-12" style="text-align:center"><span>Verifying Please Wait</span></div>
+	  </div>
+      
+    </div>
+
+  </div>
+</div>
+</body>
+<script src="jquery.min.js"></script>
+<script src="bootstrap.min.js"></script>
+<script src="jquery.dataTables.min.js"></script>
+<script src="bootbox.min.js"></script>
+<script src="main1.js"></script>
+<script>
+function startload(){
+document.getElementById('sofficeA').innerHTML = soffice+" OFFICE";
+let tk = qs['tk'];
+let data = 'trans=verify&tk='+tk;
+$("#mySave").modal("show");
+	window.fetch('webauthnController.php?'+data, {
+			method: 'GET', // *GET, POST, PUT, DELETE, etc.
+			cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
+			}
+		).then(function(response) {
+			return response.json();
+			}).then(function(json) {
+					$("#mySave").modal("hide");
+					if (json.success === false) {
+						throw new Error(json.msg);
+					}
+					if (json['error']){
+						bootbox.alert("Device not yet registered...");
+						return false;
+					}
+					$("#mySave").modal("show");
+					json.publicKey.user.id = Uint8Array.from( json.publicKey.user.id, c => c.charCodeAt(0)),
+					json.publicKey.challenge = Uint8Array.from(json.publicKey.challenge, c => c.charCodeAt(0));
+
+					if (json.publicKey.excludeCredentials) {
+						for (let cred of json.publicKey.excludeCredentials) {
+							cred.id = Uint8Array.from(cred.id, c => c.charCodeAt(0));
+						}
+					}
+					
+					return json;
+
+				}).then(function(options){
+					$("#mySave").modal("hide");
+					return navigator.credentials.create(options);
+				}).then(function(cred) {
+					$("#mySave").modal("show");
+					let clientDataJSON = arrayBufferToBase64(cred.response.clientDataJSON);
+					$.get('webauthnController.php',{"clientDataJSON":clientDataJSON,trans:"verify2","tk":qs['tk']},function (data){
+						$("#mySave").modal("hide");
+						if (data['error']){
+							//bootbox.alert('Device not yet registered');
+							verifyagain();
+						} else {						
+							bootbox.alert('Device Registered');
+						}
+					},'json');
+					
+					
+				});
+				
+}
+function verifyagain(){
+let tk = qs['tk'];
+let data = 'trans=verify&tk='+tk;
+$("#mySave").modal("show");
+	window.fetch('webauthnController.php?'+data, {
+			method: 'GET', // *GET, POST, PUT, DELETE, etc.
+			cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
+			}
+		).then(function(response) {
+			return response.json();
+			}).then(function(json) {
+					
+					json.publicKey.user.id = Uint8Array.from( json.publicKey.user.id, c => c.charCodeAt(0)),
+					json.publicKey.challenge = Uint8Array.from(json.publicKey.challenge, c => c.charCodeAt(0));
+
+					if (json.publicKey.excludeCredentials) {
+						for (let cred of json.publicKey.excludeCredentials) {
+							cred.id = Uint8Array.from(cred.id, c => c.charCodeAt(0));
+						}
+					}
+					
+					return json;
+
+				}).then(function(options){
+					$("#mySave").modal("hide");
+					return navigator.credentials.create(options);
+				}).then(function(cred) {
+					$("#mySave").modal("show");
+					let clientDataJSON = arrayBufferToBase64(cred.response.clientDataJSON);
+					$.get('webauthnController.php',{"clientDataJSON":clientDataJSON,trans:"verify2","tk":qs['tk']},function (data){
+						$("#mySave").modal("hide");
+						if (data['error']){
+							bootbox.alert('Device not yet registered');
+						} else {						
+							bootbox.alert('Device Registered');
+						}
+					},'json');
+					
+					
+				});
+
+}
+</script>

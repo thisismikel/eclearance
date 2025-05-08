@@ -1,0 +1,353 @@
+        public String SendDAR()
+        {
+            string receivers = Request["email"];
+            string xiddcrform = Request["iddcrform"];
+            string xfullname = Request["fullname"];
+            string xofficename = Request["officename"];
+            if (receivers == null)
+            {
+                return "Email failed no receiver";
+            }
+            
+            
+            try
+            {
+                //string url = Request.Url.Authority;
+                var newHTML = "<html><body style=\"color:black;\">" +
+                              "<p>&nbsp;</p>" +
+                              "<div><img src=\"http://www.dar.gov.ph/assets/images/logo.svg\" style=\"width:48px;height:48px;float:left;\" /></div>" +
+                              "<div style=\"font-size: 16px;float:left\">Department of Agrarian Reform<br>Region XI <br></div><br>" +
+                              "<p>&nbsp;</p>" +
+                              "<p>Good Day <b>"+xfullname+",</b></p>" +
+                              "<p>&nbsp;</p>" +
+                              "<div>This is to inform you that you received a letter from DAR: "+xofficename+" Electronic Document Tracking Application and requires your immediate response.  </div>" +
+                              "<p>Please log-in to the application to check further details and update the status of the letter.</p>" +
+                              "<p>Contact DAR Region XI for assistance on how to access your account.</p>" +
+                              "<p>&nbsp;</p>" +
+                              "<p>Very truly yours,</p>" +
+                              "<p>&nbsp;</p>" +
+                              "<p>&nbsp;</p>" +
+                              "<p>DAR Electronic Document Tracking Team</p>" +
+                              "<p>This is a system generated email.  Please do not reply.<p>" +
+                              "<p>&nbsp;</p>" +
+                              "<div><i>This email and its attachments are intended solely for the addressee(s) as indicated above and may contain confidential and/or privileged information which may be legally protected from disclosure. If you are not the intended recipient or if this message has been addressed to you in error, please immediately alert the sender by reply email and then delete this message and its attachments. Please be advised that any use, dissemination, copying, or storage of this message or its attachments is strictly prohibited.</i></div>" +
+                              "</body></html>";
+
+
+
+                AlternateView av1 = AlternateView.CreateAlternateViewFromString(
+                      newHTML,
+                      null, MediaTypeNames.Text.Html);
+
+
+
+
+                if (receivers != null)
+                {
+                    string[] aemail = receivers.Split(';');
+                    //=============================Using Local Account Via SMTP IIS web.config====================================
+                    using (MailMessage mail = new MailMessage())
+                    {
+                        MailAddress from = new MailAddress("davaocitywebportal@gmail.com", "DAR Davao City");
+                        mail.From = from;
+
+                        foreach (string email in aemail)
+                        {
+                            if (email != "")
+                            {
+                                mail.To.Add(email);
+                            }
+                        }
+
+                        //mail.Bcc.Add("cityarchivesandrecordscenter@gmail.com");
+                        mail.Subject = "DAR Document Tracking No.: " + xiddcrform;
+
+
+
+
+                        mail.AlternateViews.Add(av1);
+                        mail.IsBodyHtml = true;
+                        SmtpClient smtp = new SmtpClient();
+                        smtp.Send(mail);
+
+                        //=========================================================================================
+                    }
+                }
+
+
+
+
+
+                return "Emailed Successfully!";
+            }
+            catch (Exception ex)
+            {
+                return ex.Message;
+            }
+
+
+        }
+        public String SendDAR2()
+        {
+            string receivers = Request["email"];
+            string xiddcrform = Request["iddcrform"];
+            string xfullname = Request["fullname"];
+            string xofficename = Request["officename"];
+            if (receivers == null)
+            {
+                return "Email failed no receiver";
+            }
+
+
+            try
+            {
+                //string url = Request.Url.Authority;
+                var newHTML = "<html><body style=\"color:black;\">" +
+                              "<p>&nbsp;</p>" +
+                              "<div><img src=\"http://www.dar.gov.ph/assets/images/logo.svg\" style=\"width:48px;height:48px;float:left;\" /></div>" +
+                              "<div style=\"font-size: 16px;float:left\">Department of Agrarian Reform<br>Region XI <br></div><br>" +
+                              "<p>&nbsp;</p>" +
+                              "<p>Good Day <b>" + xfullname + ",</b></p>" +
+                              "<p>&nbsp;</p>" +
+                              "<div>Please be informed that your application with tracking no: " + xiddcrform + " has been approved.  This e-mail shall serve as  your notice.  Please claim at " + xofficename +" your Decision today, and your Certificate of Finality after 15 days. </div>" +
+                              "<p>Contact DAR Region XI for assistance and further details.</p>" +
+                              "<p>&nbsp;</p>" +
+                              "<p>Very truly yours,</p>" +
+                              "<p>&nbsp;</p>" +
+                              "<p>&nbsp;</p>" +
+                              "<p>DAR Electronic Document Tracking Team</p>" +
+                              "<p>This is a system generated email.  Please do not reply.<p>" +
+                              "<p>&nbsp;</p>" +
+                              "<div><i>This email and its attachments are intended solely for the addressee(s) as indicated above and may contain confidential and/or privileged information which may be legally protected from disclosure. If you are not the intended recipient or if this message has been addressed to you in error, please immediately alert the sender by reply email and then delete this message and its attachments. Please be advised that any use, dissemination, copying, or storage of this message or its attachments is strictly prohibited.</i></div>" +
+                              "</body></html>";
+
+
+
+                AlternateView av1 = AlternateView.CreateAlternateViewFromString(
+                      newHTML,
+                      null, MediaTypeNames.Text.Html);
+
+
+
+
+                if (receivers != null)
+                {
+                    string[] aemail = receivers.Split(';');
+                    //=============================Using Local Account Via SMTP IIS web.config====================================
+                    using (MailMessage mail = new MailMessage())
+                    {
+                        MailAddress from = new MailAddress("davaocitywebportal@gmail.com", "DAR Davao City");
+                        mail.From = from;
+
+                        foreach (string email in aemail)
+                        {
+                            if (email != "")
+                            {
+                                mail.To.Add(email);
+                            }
+                        }
+
+                        //mail.Bcc.Add("cityarchivesandrecordscenter@gmail.com");
+                        mail.Subject = "DAR Document Tracking No.: " + xiddcrform;
+
+
+
+
+                        mail.AlternateViews.Add(av1);
+                        mail.IsBodyHtml = true;
+                        SmtpClient smtp = new SmtpClient();
+                        smtp.Send(mail);
+
+                        //=========================================================================================
+                    }
+                }
+
+
+
+
+
+                return "Emailed Successfully!";
+            }
+            catch (Exception ex)
+            {
+                return ex.Message;
+            }
+
+
+        }
+        public String SendDAR2B()
+        {
+            string receivers = Request["email"];
+            string xiddcrform = Request["iddcrform"];
+            string xfullname = Request["fullname"];
+            string xofficename = Request["officename"];
+            if (receivers == null)
+            {
+                return "Email failed no receiver";
+            }
+
+
+            try
+            {
+                //string url = Request.Url.Authority;
+                var newHTML = "<html><body style=\"color:black;\">" +
+                              "<p>&nbsp;</p>" +
+                              "<div><img src=\"http://www.dar.gov.ph/assets/images/logo.svg\" style=\"width:48px;height:48px;float:left;\" /></div>" +
+                              "<div style=\"font-size: 16px;float:left\">Department of Agrarian Reform<br>Region XI <br></div><br>" +
+                              "<p>&nbsp;</p>" +
+                              "<p>Good Day <b>" + xfullname + ",</b></p>" +
+                              "<p>&nbsp;</p>" +
+                              "<div>Please be informed that your application with tracking no: " + xiddcrform + " has been approved.  This e-mail shall serve as  your notice.  Please claim at " + xofficename + " your DAR Clearance today. </div>" +
+                              "<p>Contact DAR Region XI for assistance and further details.</p>" +
+                              "<p>&nbsp;</p>" +
+                              "<p>Very truly yours,</p>" +
+                              "<p>&nbsp;</p>" +
+                              "<p>&nbsp;</p>" +
+                              "<p>DAR Electronic Document Tracking Team</p>" +
+                              "<p>This is a system generated email.  Please do not reply.<p>" +
+                              "<p>&nbsp;</p>" +
+                              "<div><i>This email and its attachments are intended solely for the addressee(s) as indicated above and may contain confidential and/or privileged information which may be legally protected from disclosure. If you are not the intended recipient or if this message has been addressed to you in error, please immediately alert the sender by reply email and then delete this message and its attachments. Please be advised that any use, dissemination, copying, or storage of this message or its attachments is strictly prohibited.</i></div>" +
+                              "</body></html>";
+
+
+
+                AlternateView av1 = AlternateView.CreateAlternateViewFromString(
+                      newHTML,
+                      null, MediaTypeNames.Text.Html);
+
+
+
+
+                if (receivers != null)
+                {
+                    string[] aemail = receivers.Split(';');
+                    //=============================Using Local Account Via SMTP IIS web.config====================================
+                    using (MailMessage mail = new MailMessage())
+                    {
+                        MailAddress from = new MailAddress("davaocitywebportal@gmail.com", "DAR Davao City");
+                        mail.From = from;
+
+                        foreach (string email in aemail)
+                        {
+                            if (email != "")
+                            {
+                                mail.To.Add(email);
+                            }
+                        }
+
+                        //mail.Bcc.Add("cityarchivesandrecordscenter@gmail.com");
+                        mail.Subject = "DAR Document Tracking No.: " + xiddcrform;
+
+
+
+
+                        mail.AlternateViews.Add(av1);
+                        mail.IsBodyHtml = true;
+                        SmtpClient smtp = new SmtpClient();
+                        smtp.Send(mail);
+
+                        //=========================================================================================
+                    }
+                }
+
+
+
+
+
+                return "Emailed Successfully!";
+            }
+            catch (Exception ex)
+            {
+                return ex.Message;
+            }
+
+
+        }
+        public String SendDAR3B()
+        {
+            string receivers = Request["email"];
+            string xiddcrform = Request["iddcrform"];
+            string xfullname = Request["fullname"];
+            string xofficename = Request["officename"];
+            if (receivers == null)
+            {
+                return "Email failed no receiver";
+            }
+
+
+            try
+            {
+                //string url = Request.Url.Authority;
+                var newHTML = "<html><body style=\"color:black;\">" +
+                              "<p>&nbsp;</p>" +
+                              "<div><img src=\"http://www.dar.gov.ph/assets/images/logo.svg\" style=\"width:48px;height:48px;float:left;\" /></div>" +
+                              "<div style=\"font-size: 16px;float:left\">Department of Agrarian Reform<br>Region XI <br></div><br>" +
+                              "<p>&nbsp;</p>" +
+                              "<p>Good Day <b>" + xfullname + ",</b></p>" +
+                              "<p>&nbsp;</p>" +
+                              "<div>Please be informed that your application with tracking no: " + xiddcrform + " has been disapproved due to incorrect or lacking of requirements.</div>" +
+                              "<p>Please contact DAR Region XI for assistance and further details.</p>" +
+                              "<p>&nbsp;</p>" +
+                              "<p>Very truly yours,</p>" +
+                              "<p>&nbsp;</p>" +
+                              "<p>&nbsp;</p>" +
+                              "<p>DAR Electronic Document Tracking Team</p>" +
+                              "<p>This is a system generated email.  Please do not reply.<p>" +
+                              "<p>&nbsp;</p>" +
+                              "<div><i>This email and its attachments are intended solely for the addressee(s) as indicated above and may contain confidential and/or privileged information which may be legally protected from disclosure. If you are not the intended recipient or if this message has been addressed to you in error, please immediately alert the sender by reply email and then delete this message and its attachments. Please be advised that any use, dissemination, copying, or storage of this message or its attachments is strictly prohibited.</i></div>" +
+                              "</body></html>";
+
+
+
+                AlternateView av1 = AlternateView.CreateAlternateViewFromString(
+                      newHTML,
+                      null, MediaTypeNames.Text.Html);
+
+
+
+
+                if (receivers != null)
+                {
+                    string[] aemail = receivers.Split(';');
+                    //=============================Using Local Account Via SMTP IIS web.config====================================
+                    using (MailMessage mail = new MailMessage())
+                    {
+                        MailAddress from = new MailAddress("davaocitywebportal@gmail.com", "DAR Davao City");
+                        mail.From = from;
+
+                        foreach (string email in aemail)
+                        {
+                            if (email != "")
+                            {
+                                mail.To.Add(email);
+                            }
+                        }
+
+                        //mail.Bcc.Add("cityarchivesandrecordscenter@gmail.com");
+                        mail.Subject = "DAR Document Tracking No.: " + xiddcrform;
+
+
+
+
+                        mail.AlternateViews.Add(av1);
+                        mail.IsBodyHtml = true;
+                        SmtpClient smtp = new SmtpClient();
+                        smtp.Send(mail);
+
+                        //=========================================================================================
+                    }
+                }
+
+
+
+
+
+                return "Emailed Successfully!";
+            }
+            catch (Exception ex)
+            {
+                return ex.Message;
+            }
+
+
+        }

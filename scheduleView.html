@@ -1,0 +1,531 @@
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="referrer" content="origin">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<link rel="stylesheet" href="main.css">
+<link rel="stylesheet" href="ol.css">
+<style>
+	#map {height: 100%; width:100%;}
+</style>
+
+</head>
+<body>
+<div class="container">
+	<div id="header1"></div>
+	<div id="content">
+		
+	   <div class="paper paper-polar" >
+	   <div class="row">
+			<h4 class="text-center">Create Schedule</h4></div>	
+	   </div>
+	   <div id="list">
+	     
+	   
+		<div class="row">
+			<div class="paper paper-polar" >
+			<div class="row">
+			<div class="col-xs-12">
+					<h3>List of Created Schedules</h3>
+					<h4 id="officename"></h4>
+					<div class="col-xs-12 text-right"><button type="button" onclick="additem()"  class="btn btn-primary" data-toggle="tooltip" title="Add New Schedule"><span class="glyphicon glyphicon-plus"></span></button></div>
+					<table class="table table-hover" id="ds" style="width:100%">
+					<thead><tr><th></th><th>Date</th><th>Slots</th><th>Availed</th><th>UpdatedBy</th><th>DateUpdate</th><th></th><th></th></tr></thead>
+					<tbody></tbody>
+					</table>
+					<div class="col-xs-12">
+							<br>
+							<div class="pull-right"><button type="button" onclick="additem()" class="btn btn-primary" data-toggle="tooltip" title="Add New Schedule"><span class="glyphicon glyphicon-plus"></span></button></div>	
+							<br>
+					</div>
+				</div>	
+			</div>
+			</div>
+		</div>
+	   </div>	   
+	   <div id="details" style="display:none">
+			<form name="entryform" id="entryform">
+					<fieldset name="myfields" id="myfields" disabled>
+								<input type="hidden" name="tk" id="tk" class="tk">
+								<input type="hidden" name="idoffice" id="idoffice" class="idoffice">
+								<input type="hidden" name="trans" id="trans">
+								<input type="hidden" name="updatedby" id="updatedby">
+								<input type="hidden" name="idschedule" id="idschedule" class="idschedule">
+								
+							<div class="form-group col-sm-12">
+								<label>Schedule DateTime:</label>
+								<input type="datetime-local" class="form-control" name="scheduledate">
+							</div>
+							<div class="form-group col-sm-12">
+								<label>Number of Slots:</label>
+								<input type="number" class="form-control" name="slots" min="0" step="any">
+							</div>
+							<div class="form-group col-sm-12">
+								<label>Updated By:</label>
+								<input type="text" class="form-control" name="fullname" readonly>
+							</div>
+							<div class="form-group col-sm-12">
+								<label>Date Updated:</label>
+								<input type="datetime-local" class="form-control" name="dateupdated" readonly>
+							</div>
+							
+							
+							
+					</fieldset>
+					
+					<div class="col-xs-12">
+					<br>
+						<button name="butsave" type="button" onclick="savethis(this.form)" class="btn btn-primary" id="savebut">Save</a>
+						<button name="butupdate" type="button" onclick="updatethis(this.form)" class="btn btn-success" id="updatebut">Update</a>
+						<button name="butprint" type="button" onclick="printthis(this.form)" class="btn btn-primary" id="printbut">Print</a>	
+						<button name="butcancel" type="button" onclick="cancelthis(this.form)" class="btn btn-default" id="cancelbut">Cancel</a>
+						<button name="butclose" type="button" onclick="closethis(this.form)" class="btn btn-danger" id="closebut">Close</a>	
+					</div>	
+			</form>
+			
+		</div>
+	  
+		
+		
+	   
+	</div>
+</div>
+<div id="header"></div>
+
+
+<div id="mySave" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      
+      <div class="modal-body">
+		  <img class="img-responsive center-block" alt="saving" src="images/saving.gif">
+		  <div class="col-xs-12" style="text-align:center"><span>Saving Please Wait</span></div>
+	  </div>
+      
+    </div>
+
+  </div>
+</div>
+
+<div id="myRoute" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      
+      <div class="modal-body">
+		  <img class="img-responsive center-block" alt="routing" src="images/saving.gif">
+		  <div class="col-xs-12" style="text-align:center"><span>Routing Please Wait</span></div>
+	  </div>
+      
+    </div>
+
+  </div>
+</div>
+
+<div id="mySchedule" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      	<div class="modal-header">
+			<button type="button" class="close" data-dismiss="modal">&times;</button>
+		</div>
+      <div class="modal-body">
+		<span id="client"></span>
+		<form>
+			<input type="hidden" name="tk" class="tk">
+			<input type="hidden" name="userid" class="userid">
+			<input type="hidden" name="receiver" class="receiver">
+			<input type="hidden" name="fullname" class="fullname">
+			<input type="hidden" name="cellno" class="cellno">
+			<input type="hidden" name="trans" value="saveschedule">
+			<input type="hidden" name="seloffice" class="seloffice">
+			<input type="hidden" name="xschedule" id="xschedule">
+			<input type="hidden" name="previdappointment" class="previdappointment">
+			<input type="hidden" name="idschedule" class="idschedule">
+			<div class="form-group col-xs-12" id="divschedule">
+								<label>Please select your schedule</label>
+								<select class="form-control" id="selschedule" name="selschedule"></select>
+			</div>
+			<button type="button" class="btn btn-primary" onclick="saveSchedule(this.form)">Submit</button>
+			
+		</form>
+	  </div>
+      
+    </div>
+
+  </div>
+</div>
+
+</body>
+<script src="jquery.min.js"></script>
+<script src="bootstrap.min.js"></script>
+<script src="jquery.dataTables.min.js"></script>
+<script src="Buttons/js/buttons.print.min.js"></script>
+<script src="jquery.toaster.js"></script>
+<script src="bootbox.min.js"></script>
+<script src="ol.js"></script>
+<script src="main1.js"></script>
+<script>
+var tupdate = false;
+
+
+function startload() {
+	let xofficename = document.getElementById('officename').innerHTML;
+	var caption = "DAR Region XI, "+xofficename;
+	var today = new Date();
+	var asDate = new Date();
+	var options = { year: 'numeric', month: 'long', day: 'numeric' };
+	var stoday = today.toLocaleDateString("en-US", options);
+	var tk=qs['tk'];
+	$.get("scheduleController.php?trans=getofficename&tk="+tk,function(x){ document.getElementById("officename").innerHTML = x["officename"]; $('.idoffice').val(x["idoffice"]); },'json');
+	
+	var table = $('#ds').DataTable( {
+		"ajax": "scheduleController.php?trans=getdetails&tk="+tk+"&officecode="+soffice,
+		"dom": 'lfrtBip', 
+		"buttons": [
+            "copy", 
+			{extend:"excelHtml5","title" : "List of Created Schedules", "messageTop": caption, "messageBottom": "\n Prepared by: "+ fullname + " " +stoday, "footer":true}, 
+			{extend: 'pdf', 
+			title : 'List of Created Schedules'
+			, messageTop: caption, messageBottom: '\n Prepared by: '+ fullname + ' ' +stoday, footer:true},
+			{extend: 'print',
+			title : 'List of Created Schedules',
+			 messageTop: caption, messageBottom: '\n Prepared by: '+ fullname + ' ' +stoday, footer:true
+			
+			}
+        ],
+        "columns": [
+            {"className":      'details-control',
+												 "orderable":      false,
+												 "data":           null,
+												 "defaultContent": ''},
+			{ "data": function(d){return tolocal(d);}},
+			{ "data": "slots"},
+			{ "data": "availed"},
+			{ "data": "updatedby"},
+			{ "data": "dateupdated"},
+			{"className":'updateclassbutton1',"defaultContent": '<button type="button" data-toggle="tooltip" title="edit" class="btn btn-link" ><span class="glyphicon glyphicon-pencil"></span></button>'},	
+			{"className":'deleteclassbutton1',"defaultContent": '<button type="button" data-toggle="tooltip" title="delete" class="btn btn-link" ><span class="glyphicon glyphicon-remove"></span></button>'},	
+        ],
+        "order": [[0, 'asc']]
+    } );
+	$('#ds tbody').off();
+	$('#ds tbody').on( 'click', 'td.deleteclassbutton1', function (o) {
+        var tr = $(this).closest('tr');
+        var row = table.row( tr );
+		deletethis(row.data());
+	} );
+	
+	$('#ds tbody').on('click', 'td.details-control', function () {
+		
+         var tr = $(this).closest('tr');
+        var row = table.row( tr );
+ 
+        if ( row.child.isShown() ) {
+            	row.child.hide();
+				tr.removeClass('shown');
+			}
+		else {
+            row.child( format(row.data())).show();
+            tr.addClass('shown');
+			getchild(row.data());
+        }
+		
+    } );
+	
+	
+	$('#ds tbody').on( 'click', 'td.updateclassbutton1', function (o) {
+        var tr = $(this).closest('tr');
+        var row = table.row( tr );
+		updateitem(row.data());
+	} );
+	
+	
+	
+	
+	initload();
+
+}
+function tolocal(d){
+	let xdate = new Date(d['scheduledate']);
+	return xdate.toLocaleString();
+}
+
+function deletethis(data){
+let xdate = new Date(data['scheduledate']);
+let xavailed = Number(data['availed']);
+if (xavailed > 0) {
+	$.toaster({ priority : 'danger', title : 'Create Schedule', message : 'Record cannot be deleted'});
+	return false;
+}
+
+bootbox.confirm({
+	
+    message: 'Delete Scheduled Date:  '+ xdate.toLocaleString() +'?',
+    buttons: {
+        confirm: {
+            label: 'Yes',
+            className: 'btn-danger'
+        },
+        cancel: {
+            label: 'No',
+            className: 'btn-default'
+        }
+    },
+    callback: function (result) {
+        if (result){
+			var tk=qs['tk'];
+			{$.get("scheduleController.php",{trans:"DELETE",idschedule:data['idschedule'],"tk":tk},function(data){
+										if (data['idschedule']>-1){
+											$.toaster({ priority : 'success', title : 'Create Schedule', message : 'Record Deleted'});
+									        $('#ds').DataTable().ajax.reload(null,false);} 
+											else { $.toaster({ priority : 'danger', title : 'Create Schedule', message : 'Record cannot be deleted'});}
+							        },'json');
+					}
+
+		}
+    }
+});
+
+}
+function additem(){
+	
+	let xdate = new Date();
+	document.getElementById('list').style.display="none";
+	document.getElementById('details').style.display="block";
+	var x = document.getElementById('entryform');
+	x.elements.namedItem('myfields').disabled = false;
+	x.elements.namedItem('idschedule').value = -1;
+	x.elements.namedItem('scheduledate').value = datetimelocal();
+	x.elements.namedItem('dateupdated').value = datetimelocal();
+    x.elements.namedItem('fullname').value= fullname;
+	x.elements.namedItem('updatedby').value= userid;
+	x.elements.namedItem('slots').value = 0;
+	x.elements.namedItem('trans').value='ADD';
+	x.elements.namedItem('butupdate').style.display='none';
+	x.elements.namedItem('butsave').style.display='inline';
+	x.elements.namedItem('butcancel').style.display='none';
+	x.elements.namedItem('butprint').style.display='none';
+	
+	x.elements.namedItem('myfields').disabled = false;
+	x.elements.namedItem('butclose').style.display='inline';
+	
+	
+	
+}
+function updateitem(d){
+	
+	let xdate = new Date();
+	document.getElementById('list').style.display="none";
+	document.getElementById('details').style.display="block";
+	var x = document.getElementById('entryform');
+	x.elements.namedItem('myfields').disabled = false;
+	x.elements.namedItem('idschedule').value = d['idschedule'];
+	x.elements.namedItem('scheduledate').value = initdatetimelocal(d['scheduledate']);
+	x.elements.namedItem('dateupdated').value = datetimelocal();
+    x.elements.namedItem('fullname').value= fullname;
+	x.elements.namedItem('updatedby').value= userid;
+	x.elements.namedItem('slots').value = d['slots'];
+	x.elements.namedItem('trans').value='UPDATE';
+	x.elements.namedItem('butupdate').style.display='none';
+	x.elements.namedItem('butsave').style.display='inline';
+	x.elements.namedItem('butcancel').style.display='none';
+	x.elements.namedItem('butprint').style.display='none';
+	
+	x.elements.namedItem('myfields').disabled = false;
+	x.elements.namedItem('butclose').style.display='inline';
+	
+	
+	
+}
+function updatethis(thisform){
+thisform.elements.namedItem('butupdate').style.display='none';
+thisform.elements.namedItem('butprint').style.display='none';
+thisform.elements.namedItem('butsave').style.display='inline';
+thisform.elements.namedItem('butcancel').style.display='inline';
+thisform.elements.namedItem('myfields').disabled = false;
+
+	
+	return false;
+	
+}
+function savethis(thisform){
+var cont = 1;
+
+	
+	
+	let xscheduledate = thisform.elements.namedItem('scheduledate').value;
+	let xslots = thisform.elements.namedItem('slots').value;
+	
+		
+		if (!xscheduledate) { $.toaster({ priority : 'danger', title : 'Create Schedule', message : 'Invalid Schedule Field'}); cont = -1;} 
+		if (xslots<=0) { $.toaster({ priority : 'danger', title : 'Create Schedule', message : 'Invalid No. of Slots Field'}); cont = -1;} 
+	
+	
+	if (cont > -1){
+		
+		$("#mySave").modal("show");
+		var data = $(thisform).serialize();
+		document.getElementById('savebut').style.display ="none";
+		$.ajax({
+            url: 'scheduleController.php',
+			data: data,
+			cache: false,
+			contentType: false,
+			processData: false,
+			dataType: 'json',
+			type: 'GET',
+            success: function(data) {
+			
+				    
+							
+						
+						$.toaster({ priority : 'success', title : 'Create Schedule', message : 'Appointment Schedule  '+data['scheduledate']+' saved.'});
+						$('.iddcrform').val(data['iddcrform']);
+						$('.tk').val(qs['tk']);
+						$('.trans').val('UPDATE');
+												tupdate = true;
+						$('#ds').DataTable().ajax.reload(null,false);
+						document.getElementById('myfields').disabled = true;
+						document.getElementById('updatebut').style.display='inline';
+						document.getElementById('savebut').style.display='none';
+						document.getElementById('cancelbut').style.display='none';
+						
+						
+					
+					
+					$("#mySave").modal("hide");
+					
+			}
+		});
+		
+		//$("#officeModal").modal("hide");
+		
+	}
+	return true;
+}
+
+function closethis(thisform){
+document.getElementById('details').style.display="none";
+if (tupdate) {
+	//$('#ds').DataTable().ajax.reload(false,false);
+	tupdate = false;
+}
+document.getElementById('list').style.display="block";
+}
+function format(d){
+let idname = "schedule"+d['idschedule'];
+let tbl =document.getElementById(idname);
+if (tbl) {
+	tbl.parentNode.removeChild(tbl);
+}
+	return '<div><table class="table" id="schedule'+d['idschedule']+'"><thead><tr><th>Name</th><th>DateApplied</th><th>Remarks</th><th>Details</th><th></th></tr></thead><tbody></tbody></table></div>';
+}
+function getchild(d){
+let xdate = new Date(d['scheduledate']); 
+let xofficename = document.getElementById('officename').innerHTML;
+	var caption = "DAR Region XI, "+xofficename+"\n Scheduled Date: "+ xdate.toLocaleString();
+	var today = new Date();
+	var asDate = new Date();
+	var options = { year: 'numeric', month: 'long', day: 'numeric' };
+	var stoday = today.toLocaleDateString("en-US", options);
+	var tk=qs['tk'];
+
+let tblid = "#schedule"+d['idschedule'];
+let xscheduledate = d['scheduledate'];
+var table = $(tblid).DataTable( {
+		"ajax": "scheduleController.php?trans=getappointments&tk="+tk+"&idschedule="+d['idschedule'],
+		"dom": 'lfrtBip', 
+		"buttons": [
+            "copy", 
+			{extend:"excelHtml5","title" : "List of Created Schedules", "messageTop": caption, "messageBottom": "\n Prepared by: "+ fullname + " " +stoday, "footer":true}, 
+			{extend: 'pdf', 
+			title : 'List of Created Schedules'
+			, messageTop: caption, messageBottom: '\n Prepared by: '+ fullname + ' ' +stoday, footer:true},
+			{extend: 'print',
+			title : 'List of Created Schedules',
+			 messageTop: caption, messageBottom: '\n Prepared by: '+ fullname + ' ' +stoday, footer:true
+			
+			}
+        ],
+        "columns": [
+            
+			{ "data": "fullname"},
+			{ "data": "dateapplied"},
+			{ "data": "appremarks"},
+			{ "data": function(d){return getdetails(d);}},
+			{"className":'reschedulebutton',"defaultContent": '<button type="button" data-toggle="tooltip" title="Re-schedule" class="btn btn-link" ><span class="glyphicon glyphicon-log-out"></span></button>'}
+        ],
+        "order": [[0, 'asc']],"destroy":true
+    } );
+	$(tblid+' tbody').off();
+	$(tblid+' tbody').on( 'click', 'td.reschedulebutton', function (o) {
+        var tr = $(this).closest('tr');
+        var row = table.row( tr );
+		reschedule(row.data(),xscheduledate);
+	} );
+}
+function getdetails(d){
+	if (d['ridappointment']){
+		return '<a href="https://darxi.net/verifyappointment.php?idappointment='+d['ridappointment']+'" target="_blank"><span class="glyphicon glyphicon-file"></span></a>';
+	} else {
+		return "";
+	}
+}
+function reschedule(d,xscheduledate){
+
+	if (d['appremarks']){
+		return false;
+	}
+			$('.tk').val(qs['tk']);
+			$('.userid').val(d['userid']);
+			$('.receiver').val(d['emailaddress']);
+			$('.fullname').val(d['fullname']);
+			$('.cellno').val(d['cellno']);
+			$('.previdappointment').val(d['idappointment']);
+			$('.idschedule').val(d['idschedule']);
+			let xdate = new Date(xscheduledate);
+			document.getElementById('xschedule').value = xdate.toLocaleString();
+			let idoffice = $('.idoffice').val();
+			$.get("indexController.php",{"trans":"getschedules","idoffice":idoffice}, function(d){
+			var gl = document.getElementById('selschedule');
+			var row = d['data'];
+			gl.innerHTML = "";
+			
+			for (a = 0;a < row.length; a++){
+				
+							let tdate = new Date(row[a]['scheduledate']);
+							if (xdate.toLocaleString() != tdate.toLocaleString()){
+									var option = document.createElement("option");
+									option.text = tdate.toLocaleString();
+									option.value = row[a]['idschedule'];
+									gl.add(option); 
+							}
+			}
+			document.getElementById('divschedule').style.display = "block";
+		},'json');
+			$('#mySchedule').modal('show');
+
+}
+function saveSchedule(x){
+let cont = 0;
+	if (x.elements.namedItem('selschedule').selectedIndex == -1) {alert(x.elements.namedItem('selschedule').selectedIndex); $.toaster({ priority : 'danger', title : 'DAR', message : 'Invalid Schedule'});cont = -1;}
+	if (cont > -1){
+		let data = $(x).serialize();
+		$.get("scheduleController.php",data,function (d) {
+			data={"receiver":d['receiver'],"fullname":d['fullname'],"idappointment":d['idappointment'],"cellno":d['cellno']};
+			let tblid = "#schedule"+d['idschedule'];
+			$(tblid).DataTable().ajax.reload(null,false);
+			$.get("sendappointment2.php",data);
+			$('#mySchedule').modal('hide');			
+		}, 'json');
+	}
+}
+
+</script>

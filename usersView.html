@@ -1,0 +1,532 @@
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<link rel="stylesheet" href="main.css">
+
+</head>
+<body>
+<div class="container">
+	<div id="header1"></div>
+	<div id="content">
+		
+	   <div class="paper paper-polar" >
+	   <div class="row">
+			<h4 class="text-center">Users</h4></div>	
+	   </div>
+	   <div id="list">
+	     
+	   
+		<div class="row">
+			<div class="paper paper-polar" >
+			<div class="row">
+			<div class="col-xs-12">
+					<h3>List of Users</h3>
+					<div class="col-xs-12 text-right"><button type="button" onclick="additem()"  class="btn btn-primary" data-toggle="tooltip" title="Add Level"><span class="glyphicon glyphicon-plus"></span></button></div>
+					<table class="table table-hover" id="ds" style="width:100%">
+					<thead><tr><th></th><th>Name</th><th>Office</th><th></th></tr></thead>
+					
+					<tbody></tbody>
+					</table>
+					<div class="col-xs-12">
+							<br>
+							<div class="pull-right"><button type="button" onclick="additem()" class="btn btn-primary" data-toggle="tooltip" title="Add New Account Record"><span class="glyphicon glyphicon-plus"></span></button></div>	
+							<br>
+					</div>
+				</div>	
+			</div>
+			</div>
+		</div>
+	   </div>
+		<div id="details" style="display:none">
+			<form name="entryform" id="entryform" enctype="multipart/form-data" method="POST" >
+					<fieldset name="myfields" disabled>
+								<input type="hidden" name="userid" id="userid">
+								<input type="hidden" name="trans" id="trans">
+								<input type="hidden" name="image1" id="image1">
+								<input type="hidden" name="sig1" id="sig1">
+								<input type="hidden" name="tk">
+								<div class="col-md-6 col-sm-12">
+									<img src="userimages/person.jpg" class="img-responsive" id="imgupload" name="imgupload" style="max-width:20%;" >
+									<br>
+									<input type="file" class="file" name="imagefile" id="file" accept="image/jpeg, image/png" onchange="readURL(this,'#imgupload');">
+								</div>	
+								<div class="col-md-6 col-sm-12">
+									<img src="signatures/signature.png" class="img-responsive" id="sigupload" name="imgupload" style="max-width:30%;" >
+									<br>
+									<input type="file" class="file" name="sigfile" id="sigfile" accept="image/png" onchange="readURL(this,'#sigupload');">
+									<br/><label>Height:150px Width:300px png format</label>
+								</div>
+								<div class="col-xs-12">
+							<div class="form-group">
+								<label for="email">Email</label>
+								<input type="email" class="form-control" id="emailaddress" name="emailaddress" >
+							</div>
+							<div class="form-group">
+								<label for="password">Password</label>
+								<input type="password" class="form-control" id="password" name="password" >
+							</div>
+							<div class="form-group">
+								<label for="password2">Confirm Password</label>
+								<input type="password" class="form-control" id="password2" name="password2" >
+							</div>
+							<div class="form-group">
+								<label for="fullname">Fullname</label>
+								<input type="text" class="form-control" id="fullname" name="fullname" required="true"  placeholder="Complete Name">
+							</div>
+							<div class="form-group">
+								<label for="role">Role</label>
+								<input type="text" class="form-control" id="role" name="role" required="true"  placeholder="Role">
+							</div>
+							<div class="form-group">
+								<label for="sel1">Office</label>
+								<select class="form-control" id="office" name="office">
+									
+								</select>
+							</div>
+							<div class="form-group">
+								<label for="cellno">Cellno</label>
+								<input type="text" class="form-control" id="cellno" name="cellno" required="true"  placeholder="09123456789">
+							</div>
+							<div class="form-group">
+								<label>Address</label>
+								<input type="text" class="form-control" id="address" name="address"  placeholder="Residential Address">
+							</div>
+							<div class="form-group">
+								<label for="remarks">Remarks</label>
+								<input type="text" class="form-control" id="remarks" name="remarks"  placeholder="Remarks">
+							</div>
+							<div class="form-group">
+								<label>Active</label>
+								<select class="form-control" name="active" id="active">
+									<option value='Y'>Yes</option>
+									<option value='N'>No</option>
+								</select>
+							</div>
+							<div class="form-group">
+								<label for="login">Log-In Date</label>
+								<input type="text" class="form-control" id="login" name="login"  disabled>
+							</div>
+							<div class="form-group">
+								<label for="login">IP Address</label>
+								<input type="text" class="form-control" id="ip" name="ip"  disabled>
+							</div>
+							
+					</fieldset>
+					<div class="col-xs-12">
+						<button name="butsave" type="button" onclick="savethis(this.form)" class="btn btn-primary" id="savebut">Save</a>
+						<button name="butupdate" type="button" onclick="updatethis(this.form)" class="btn btn-success" id="updatebut">Update</a>
+						<button name="butcancel" type="button" onclick="cancelthis(this.form)" class="btn btn-default" id="cancelbut">Cancel</a>	
+						<button name="butclose" type="button" onclick="closethis(this.form)" class="btn btn-danger" id="closebut">Close</a>	
+					</div>	
+					
+				</form>	
+		</div>	   
+	   
+	  
+		
+		
+	   
+	</div>
+</div>
+<div id="header"></div>
+
+
+<div id="mySave" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      
+      <div class="modal-body">
+		  <img class="img-responsive center-block" alt="saving" src="images/saving.gif">
+		  <div class="col-xs-12" style="text-align:center"><span>Saving Please Wait</span></div>
+	  </div>
+      
+    </div>
+
+  </div>
+</div>
+<div id="prevModal" class="modal" role="dialog">
+  <div class="modal-dialog modal-lg" role="document">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h5 class="modal-title"><span id="modaltitle"></span></h4>
+      </div>
+      <div class="modal-body">
+		<div class="row"><div id="modaldetails" class="col-xs-12"></div></div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+</div>
+<div id="mySave" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      
+      <div class="modal-body">
+		  <img class="img-responsive center-block" alt="saving" src="images/saving.gif">
+		  <div class="col-xs-12" style="text-align:center"><span>Saving Please Wait</span></div>
+	  </div>
+      
+    </div>
+
+  </div>
+</div>
+
+</body>
+<script src="jquery.min.js"></script>
+<script src="bootstrap.min.js"></script>
+<script src="jquery.dataTables.min.js"></script>
+<script src="Buttons/js/buttons.print.min.js"></script>
+<script src="jquery.toaster.js"></script>
+<script src="bootbox.min.js"></script>
+<script src="select2.min.js"></script>
+<script src="Chart.bundle.min.js"></script>
+<script src="main1.js"></script>
+<script>
+var tupdate = 0;
+function readURL(input, id) {
+  if (input.files && input.files[0]) {
+    var reader = new FileReader();
+    reader.onload = function (e) {
+	  var sfilename = input.value;
+	  var ext = sfilename.substr(sfilename.lastIndexOf('.') + 1);
+	  if (ext == 'pdf'){$(id).attr('src', 'attachments/pdficon.jpg');} else {
+      $(id)
+        .attr('src', e.target.result);}
+        
+    };
+	
+    reader.readAsDataURL(input.files[0]);
+  }
+}
+
+function startload() {
+	{$.get("usersController.php",{trans:"getoffices",tk:qs['tk']}, function(data){
+		var x = document.getElementById('entryform');
+		var gl = x.elements.namedItem('office');
+		var row = data['data'];
+		gl.innerHTML = "";
+		for (a = 0;a < row.length; a++){
+			var option = document.createElement("option");
+							option.text = row[a]['officename'];
+							option.value = row[a]['officecode'];
+							gl.add(option); 
+		}
+	},"json");}
+	//document.getElementById('details').style.display = "block";
+	var caption = "DAR Region XI";
+	var today = new Date();
+	var asDate = new Date();
+	var options = { year: 'numeric', month: 'long', day: 'numeric' };
+	var stoday = today.toLocaleDateString("en-US", options);
+	
+	var tk=qs['tk'];
+	var table = $('#ds').DataTable( {
+		"ajax": "usersController.php?trans=getdetails&tk="+tk,
+		"dom": 'lfrtBip', 
+		"buttons": [
+            "copy", 
+			{extend:"excelHtml5","title" : "List of Users", "messageTop": caption, "messageBottom": "\n Prepared by: "+ fullname + " " +stoday, "footer":true}, 
+			{extend: 'pdf', 
+			title : 'List of Users'
+			, messageTop: caption, messageBottom: '\n Prepared by: '+ fullname + ' ' +stoday, footer:true},
+			{extend: 'print',
+			title : 'List of Users',
+			 messageTop: caption, messageBottom: '\n Prepared by: '+ fullname + ' ' +stoday, footer:true
+			
+			}
+        ],
+        "columns": [
+            {"className":      'details-control',
+												 "orderable":      false,
+												 "data":           null,
+												 "defaultContent": ''},
+			{ "data": "fullname"},
+			{ "data": "officename"},
+			{"className":'prevbutton',"defaultContent": '<button type="button" data-toggle="tooltip" title="priviledges" class="btn btn-link" ><span class="glyphicon glyphicon-lock" aria-hidden="true"></span></button>'}	
+
+        ],
+        "order": [[3, 'desc']]
+    } );
+	
+	
+	$('#ds tbody').on( 'click', 'td.prevbutton', function (o) {
+        var tr = $(this).closest('tr');
+        var row = table.row( tr );
+		priveledges(row.data());
+		
+	} );
+	$('#ds tbody').on('click', 'td.details-control', function () {
+		
+        var tr = $(this).closest('tr');
+        var row = table.row( tr );
+ 
+        if ( row.child.isShown() ) {
+            
+            row.child.hide();
+            tr.removeClass('shown');
+        }
+        else {
+            if ( table.row( '.shown' ).length ) {
+                  $('.details-control', table.row( '.shown' ).node()).click();
+			}
+            row.child( format(row.data())).show();
+            tr.addClass('shown');
+			getchild(row.data());
+        }
+    } );
+	
+	
+	document.getElementById('details').style.display="none"; 
+	
+	initload();
+}
+
+
+function format(row){
+var userid = row['userid'];
+var elem = document.getElementById(userid);
+if (elem){
+  elem.parentNode.removeChild(userid);
+}
+  return '<div class="col-xs-12 well" id="'+userid+'"></div>';
+}
+function getchild(data){
+var userid = '#'+data['userid'];
+
+var tform = document.getElementById('form'+data['userid']);
+if (tform){
+	tform.parentNode.removeChild('form'+data['userid']);
+}
+var nform = $('#entryform').clone(true).prop('id','form'+data['userid']);
+nform.appendTo( userid );
+var x = document.getElementById('form'+data['userid']);
+//var x = document.getElementById(userid);
+
+	
+	x.elements.namedItem('tk').value=qs['tk'];
+	x.elements.namedItem('trans').value='UPDATE';
+	x.elements.namedItem('userid').value=data['userid'];
+	x.elements.namedItem('fullname').value=data['fullname'];
+	x.elements.namedItem('active').value=data['active'];
+	x.elements.namedItem('role').value=data['role'];
+	x.elements.namedItem('office').value=data['office'];
+	x.elements.namedItem('login').value=data['login'];
+	x.elements.namedItem('ip').value=data['ip'];
+	x.elements.namedItem('cellno').value=data['cellno'];
+	x.elements.namedItem('emailaddress').value=data['emailaddress'];
+	x.elements.namedItem('remarks').value=data['remarks'];
+	x.elements.namedItem('address').value=data['address'];
+	if (data['image']){
+		document.getElementById('imgupload').src="userimages/"+data['image'];
+		x.elements.namedItem('image1').value="userimages/"+data['image'];
+	} else {
+		document.getElementById('imgupload').src="userimages/person.jpg";
+		x.elements.namedItem('image1').value="";
+	}
+	if (data['signature']){
+		document.getElementById('sigupload').src="signatures/"+data['signature'];
+		x.elements.namedItem('sig1').value="signatures/"+data['signature'];
+	} else {
+		document.getElementById('sigupload').src="signatures/signature.png";
+		x.elements.namedItem('sig1').value="";
+	}
+	x.elements.namedItem('myfields').disabled = true;
+	x.elements.namedItem('butupdate').style.display='inline';
+	x.elements.namedItem('butsave').style.display='none';
+	x.elements.namedItem('butcancel').style.display='none';
+	x.elements.namedItem('butclose').style.display='none';
+	
+	
+}
+function additem(){
+	document.getElementById('list').style.display="none";
+	document.getElementById('details').style.display="block";
+	var x = document.getElementById('entryform');
+	x.elements.namedItem('userid').value=-1;
+	x.elements.namedItem('tk').value=qs['tk'];
+	x.elements.namedItem('fullname').value="";
+	x.elements.namedItem('active').value="Y";
+	x.elements.namedItem('role').value="";
+	x.elements.namedItem('office').value="";
+	x.elements.namedItem('login').value="";
+	x.elements.namedItem('ip').value="";
+	x.elements.namedItem('cellno').value="";
+	x.elements.namedItem('emailaddress').value="";
+	x.elements.namedItem('remarks').value="";
+	document.getElementById('imgupload').src="userimages/person.jpg";
+	document.getElementById('sigupload').src="signatures/signature.png";
+	x.elements.namedItem('image1').value="";
+	x.elements.namedItem('sig1').value="";
+	x.elements.namedItem('myfields').disabled = false;
+	x.elements.namedItem('butclose').style.display='inline';
+	x.elements.namedItem('butupdate').style.display='none';
+	document.getElementsByName('trans')[0].value='ADD';
+	document.getElementById('savebut').style.display='inline';
+	document.getElementById('cancelbut').style.display='inline';
+	
+	
+}
+function updatethis(thisform){
+thisform.elements.namedItem('butupdate').style.display='none';
+thisform.elements.namedItem('butsave').style.display='inline';
+thisform.elements.namedItem('butcancel').style.display='inline';
+thisform.elements.namedItem('myfields').disabled = false;
+
+	
+	return false;
+	
+}
+
+function savethis(thisform){
+var cont = 1;
+
+	
+	var xsubject = thisform.elements.namedItem('emailaddress').value;
+	var xdetails = thisform.elements.namedItem('fullname').value;
+	var pass = thisform.elements.namedItem('password').value;
+	var pass2 = thisform.elements.namedItem('password2').value;
+	var xtrans = thisform.elements.namedItem('trans').value;
+		
+		if (!xsubject) { $.toaster({ priority : 'danger', title : 'User', message : 'Invalid Email Field'}); cont = -1;} 
+		var atpos = xsubject.indexOf("@");
+		var dotpos = xsubject.lastIndexOf(".");
+		if (atpos<1 || dotpos<atpos+2 || dotpos+2>=xsubject.length) {
+			
+			$.toaster({ priority : 'danger', title : 'User', message : 'Invalid Email Field'}); cont = -1;
+		}
+		if (xtrans=='ADD'){
+			if (!pass) { $.toaster({ priority : 'danger', title : 'User', message : 'Invalid Email Field'}); cont = -1;} 
+		}
+		if (!xdetails) { $.toaster({ priority : 'danger', title : 'User', message : 'Invalid Fullname Field'}); cont = -1;} 
+		if (pass !=pass2) { $.toaster({ priority : 'danger', title : 'User', message : 'Invalid password Field'}); cont = -1;} 
+	
+	
+	if (cont > -1){
+		
+		var data = new FormData(thisform);
+		//var data = $(thisform).serialize();
+		
+		$.ajax({
+            url: 'usersController.php',
+			data: data,
+			cache: false,
+			contentType: false,
+			processData: false,
+			dataType: 'json',
+			type: 'POST',
+            success: function(data) {
+					
+						$.toaster({ priority : 'success', title : 'Users', message : 'Record Saved'});
+						tupdate = true;
+						document.getElementById('userid').value = data['userid'];
+						document.getElementById('trans').value = 'UPDATE';
+						document.getElementById('image1').value = 'userimages/'+data['image'];
+						$('#ds').DataTable().ajax.reload(false,false);
+					
+			}
+		});
+		thisform.elements.namedItem('myfields').disabled = true;
+		thisform.elements.namedItem('butupdate').style.display='inline';
+		thisform.elements.namedItem('butsave').style.display='none';
+		thisform.elements.namedItem('butcancel').style.display='none';
+		//$("#officeModal").modal("hide");
+		
+	}
+	return true;
+}
+
+function cancelthis(thisform){
+	$('#ds').DataTable().ajax.reload(false,false);
+	//document.getElementsByName('myfields').disabled = true;
+	$('#officeModal').modal('hide');
+}
+function closethis(thisform){
+document.getElementById('details').style.display="none";
+if (tupdate) {
+	$('#ds').DataTable().ajax.reload(false,false);
+	tupdate = false;
+}
+document.getElementById('list').style.display="block";
+}
+function priveledges(data){
+var userid = data['userid'];
+var tk=qs['tk'];
+	$.get("usersController.php", {trans:"priviledges",userid: userid,"tk":tk}, function(data) {configuredata(data);},'json');
+	var sheader ='';
+	var src="userimages/person.jpg";
+	if (data['image']) {
+		src="userimages/"+data['image'];
+	}
+	sheader ="<div class='col-md-2'><img src='"+src+"' style='max-width:5em;'></div><div class='col-md-10'>";
+	key =data['fullname'];
+	sheader += "Name: <strong>"+key+"</strong>";
+	sheader +=" Email: <strong>"+data['emailaddress']+"</strong><br>";
+	sheader +="Role: <strong>"+data['role']+"</strong>";
+	sheader +=" Active: <strong>"+data['active']+"</strong></div>";
+	document.getElementById('modaltitle').innerHTML =sheader;
+}
+
+function configuredata(data){
+var id = data['userid'];
+var access = data['access'];
+
+var content='<form id="accessfrm"><input type="hidden"  name="userid" value="'+id+'"><input type="hidden" name="trans" value="access"><input type="hidden" name="tk" value="'+qs['tk']+'">';
+for(var key in menu) {
+			var ckey ="'"+key+"'";
+			var detail = menu[key];
+			if (detail['url']){
+				var c = checkaccess(key,access);
+				content +="<div class='col-xs-12 well'><input type='checkbox' name='menu[]' value='"+key+"' "+c+" >"+key+"</div>";
+			} else {
+				content +="<div class='col-xs-12 well'><div class='col-xs-2'>"+key+"</div><div class='col-xs-10'>";
+				content += showlist(key,access);
+				content +="</div></div>";
+			}
+}
+content+="<div class='col-xs-12'><button class='btn btn-primary' type='button' onclick='saveaccess()'>Save</button></div>";
+content+="</form>";
+document.getElementById('modaldetails').innerHTML = content;
+$("#prevModal").modal("show");
+
+}
+function showlist(key, access){
+var sdetails='';
+var stitle = menu[key];
+ for(var details in stitle){
+	var c = checkaccess(details,access);
+	sdetails +="<div class='col-xs-3'><input type='checkbox' name='menu[]' value='"+details+"' "+c+" >"+details+"</div>";
+ }
+return sdetails;
+}
+function saveaccess(){
+$("#prevModal").modal("hide");
+$("#mySave").modal("show");
+var data = new FormData(document.getElementById('accessfrm'));
+		$.ajax({
+            url: 'usersController.php',
+			data: data,
+			cache: false,
+			contentType: false,
+			processData: false,
+			dataType: 'json',
+			type: 'POST',
+            success: function(data) {
+				if (data['id']> -1) {$.toaster({ priority : 'success', title : 'User Privileges', message : 'Record saved'});} else {$.toaster({ priority : 'danger', title : 'User Privelages', message : 'Record failed to saved'});}
+				$("#mySave").modal("hide");
+			}
+		});
+}
+</script>
